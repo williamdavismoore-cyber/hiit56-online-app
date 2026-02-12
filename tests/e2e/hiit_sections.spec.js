@@ -3,18 +3,26 @@ const { test, expect } = require('@playwright/test');
 test('HIIT category page renders sections in correct order', async ({ page }) => {
   await page.goto('/workouts/category.html?c=hiit');
 
-  const maxCardio = page.locator('h2:has-text("HIIT56 Max Cardio")');
-  const specials = page.locator('h2:has-text("HIIT56 Specials/Mash-Ups")');
+  // Sanity: category template present
+  await expect(page.locator('[data-cat-title]')).toHaveCount(1);
+  await expect(page.locator('[data-cat-title]')).toHaveText(/HIIT/i);
 
-  // Sections exist (may be hidden if no videos, but should exist in DOM)
-  await expect(maxCardio).toHaveCount(1);
-  await expect(specials).toHaveCount(1);
+  // Section containers should exist in DOM (may be hidden when empty)
+  const maxSection = page.locator('[data-max-cardio-section]');
+  const specialsSection = page.locator('[data-specials-section]');
 
-  const b1 = await maxCardio.boundingBox();
-  const b2 = await specials.boundingBox();
+  await expect(maxSection).toHaveCount(1);
+  await expect(specialsSection).toHaveCount(1);
 
-  // If either is not rendered/visible (rare), don't hard-fail on bounding boxes.
-  if (b1 && b2) {
-    expect(b1.y).toBeLessThan(b2.y);
-  }
+  await expect(maxSection).toContainText(/Max\s+Cardio/i);
+  await expect(specialsSection).toContainText(/Specials/i);
+
+  // Order check using DOM position (works even if hidden)
+  const inOrder = await page.evaluate(() => {
+    const max = document.querySelector('[data-max-cardio-section]');
+    const specials = document.querySelector('[data-specials-section]');
+    if (!max || !specials) return false;
+    return Boolean(max.compareDocumentPosition(specials) & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  expect(inOrder).toBeTruthy();
 });
