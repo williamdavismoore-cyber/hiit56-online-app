@@ -1,6 +1,12 @@
 const { test, expect } = require('@playwright/test');
 
 test('member timer can skip into REST mode (smoke)', async ({ page }) => {
+  // E2E: mark this browser as a MEMBER before the first page loads,
+  // otherwise the app's guard will redirect to /login.html.
+  await page.addInitScript(() => {
+    try { localStorage.setItem('hiit56_role', 'member'); } catch {}
+  });
+
   // Use explicit index.html to avoid directory fallback quirks
   await page.goto('/app/timer/index.html?src=demo:online_quick');
 
