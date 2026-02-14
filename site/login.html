@@ -10,150 +10,160 @@
   <meta name="theme-color" content="#000000">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/styles.css">
-  
 </head>
 <body data-page="login">
   <div class="header">
-  <div class="header-inner">
-    <a class="logo" href="/">
-      <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
-    </a>
-    <div class="nav">
-      <a href="/workouts/" title="Public workout previews">Workouts</a>
-            <a href="/pricing.html">Pricing</a>
-      <a href="/for-gyms/">For Gyms</a>
-      <a href="/join.html">Join</a>
-<a href="/login.html" class="primary">Log in</a>
-      <a href="/biz/" title="Staff/Admin only">Business</a>
-      <span class="badge" data-role-pill>Guest</span>
-      <span class="badge" data-tenant-pill style="display:none"></span>
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+        <a href="/workouts/" title="Public workout previews">Workouts</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/for-gyms/">For Gyms</a>
+        <a href="/join.html">Join</a>
+        <a href="/login.html" class="primary">Log in</a>
+        <a href="/biz/" title="Staff/Admin only">Business</a>
+        <span class="badge" data-role-pill>Guest</span>
+        <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
     </div>
   </div>
-</div>
   
-<div class="container">
-  <div class="section-title">
-    <h2>Login (Demo)</h2>
-    <div class="small">Role + Business selector (until Supabase is wired).</div>
-  </div>
-
-  <div class="banner">
-    <strong>Checkpoint note</strong>
-    This build still uses a demo switcher so you can QA Guest vs Member vs Business vs Master Admin immediately. Real authentication and paid access will be wired with Supabase + Stripe.
-  </div>
-
-  
-  <div class="card" style="min-height:auto; margin-bottom:14px">
-    <div class="meta">
-      <div class="title">Demo identity (email)</div>
-      <p class="small">Used for coupon + comp membership QA (until Supabase auth is wired).</p>
-      <input class="input" placeholder="you@example.com" data-demo-email>
+  <div class="container">
+    <div class="section-title">
+      <h2>Login (Demo)</h2>
+      <div class="small">Role + Business selector (until Supabase is wired).</div>
     </div>
-  </div>
 
-  <div class="card" style="min-height:auto; margin-bottom:14px">
-    <div class="meta">
-      <div class="title">Business context (demo)</div>
-      <p class="small">Pick which gym/business you are “logged into” for the Business Portal. (Tenants are demo-only until Supabase is connected.)</p>
-      <div class="btn-row" style="align-items:center; gap:10px; flex-wrap:wrap">
-        <select class="select" data-tenant-select style="min-width:260px">
-          <option value="">Select a business (demo)...</option>
-        </select>
-        <span class="small" data-tenant-note></span>
+    <div class="banner">
+      <strong>Checkpoint note</strong>
+      This build still uses a demo switcher so you can QA Guest vs Member vs Business vs Master Admin immediately. Real authentication and paid access will be wired with Supabase + Stripe.
+    </div>
+
+    <div class="card" style="min-height:auto; margin-bottom:14px">
+      <div class="meta">
+        <div class="title">Demo identity (email)</div>
+        <p class="small">Used for coupon + comp membership QA (until Supabase auth is wired).</p>
+        <input class="input" placeholder="you@example.com" data-demo-email>
       </div>
     </div>
-  </div>
 
-  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-    <div class="card" style="min-height:auto">
+    <div class="card" style="min-height:auto; margin-bottom:14px">
       <div class="meta">
-        <div class="title">Continue as Guest</div>
-        <p class="small">Public preview mode (conversion flow).</p>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn" data-login-guest>Set Guest</button>
+        <div class="title">Business context (demo)</div>
+        <p class="small">Pick which gym/business you are “logged into” for the Business Portal. (Tenants are demo-only until Supabase is connected.)</p>
+        <div class="btn-row" style="align-items:center; gap:10px; flex-wrap:wrap">
+          <select class="select" data-tenant-select style="min-width:260px">
+            <option value="">Select a business (demo)...</option>
+          </select>
+          <span class="small" data-tenant-note></span>
         </div>
       </div>
     </div>
 
-    <div class="card" style="min-height:auto">
-      <div class="meta">
-        <div class="title">Member (Demo)</div>
-        <p class="small">Access the on-demand library pages + member timer.</p>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn primary" data-login-member>Set Member</button>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <div class="card" style="min-height:auto">
+        <div class="meta">
+          <div class="title">Continue as Guest</div>
+          <p class="small">Public preview mode (conversion flow).</p>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn" data-login-guest>Set Guest</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-height:auto">
+        <div class="meta">
+          <div class="title">Member (Demo)</div>
+          <p class="small">Access the on-demand library pages + member timer.</p>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn primary" data-login-member>Set Member</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-height:auto">
+        <div class="meta">
+          <div class="title">Business Staff (Demo)</div>
+          <p class="small">Run classes, view moves in-app (no admin settings).</p>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn primary" data-login-biz-staff>Set Staff</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-height:auto">
+        <div class="meta">
+          <div class="title">Business Admin (Demo)</div>
+          <p class="small">Manage gym templates + staff (future). Full business portal access.</p>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn primary" data-login-biz-admin>Set Admin</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-height:auto">
+        <div class="meta">
+          <div class="title">Master Admin (William)</div>
+          <p class="small">Global platform control (tenants, coupons, comps, pricing).</p>
+          <div class="btn-row" style="margin-top:10px">
+            <button class="btn primary" data-login-super-admin>Set Master</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="card" style="min-height:auto">
-      <div class="meta">
-        <div class="title">Business Staff (Demo)</div>
-        <p class="small">Run classes, view moves in-app (no admin settings).</p>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn primary" data-login-biz-staff>Set Staff</button>
-        </div>
-      </div>
+    <div class="section-title" style="margin-top:18px">
+      <h2>Next wiring</h2>
+    </div>
+    <p class="small">
+      When you provide Stripe + Supabase deliverables, we will replace this demo switcher with real account creation, paid plans, coupon codes, comps, and business tenant provisioning.
+    </p>
+
+    <div class="section-title" style="margin-top:18px">
+      <h2>Quick actions</h2>
+    </div>
+    <div class="btn-row">
+      <a class="btn primary" href="/join.html">Join as a Member</a>
+      <a class="btn" href="/for-gyms/start.html">Start a Business Portal</a>
+      <a class="btn" href="/admin/">Master Admin</a>
     </div>
 
-    <div class="card" style="min-height:auto">
-      <div class="meta">
-        <div class="title">Business Admin (Demo)</div>
-        <p class="small">Manage gym templates + staff (future). Full business portal access.</p>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn primary" data-login-biz-admin>Set Admin</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="min-height:auto">
-      <div class="meta">
-        <div class="title">Master Admin (William)</div>
-        <p class="small">Global platform control (tenants, coupons, comps, pricing).</p>
-        <div class="btn-row" style="margin-top:10px">
-          <button class="btn primary" data-login-super-admin>Set Master</button>
-        </div>
-      </div>
-    </div>
   </div>
-
-  <div class="section-title" style="margin-top:18px">
-    <h2>Next wiring</h2>
-  </div>
-  <p class="small">
-    When you provide Stripe + Supabase deliverables, we will replace this demo switcher with real account creation, paid plans, coupon codes, comps, and business tenant provisioning.
-  </p>
-
-  <div class="section-title" style="margin-top:18px">
-    <h2>Quick actions</h2>
-  </div>
-  <div class="btn-row">
-    <a class="btn primary" href="/join.html">Join as a Member</a>
-    <a class="btn" href="/for-gyms/start.html">Start a Business Portal</a>
-    <a class="btn" href="/admin/">Master Admin</a>
-  </div>
-
-</div>
 
   <div class="modal" id="videoModal" aria-hidden="true">
-  <div class="modal-inner">
-    <div class="modal-head">
-      <div class="title" data-modal-title>Video</div>
-      <button class="modal-close" data-modal-close>Close</button>
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
     </div>
-    <div class="modal-body" data-modal-body></div>
   </div>
-</div>
+
   <div class="footer">
-  <div class="container">
-    <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+    </div>
   </div>
-</div>
   
   <script>
     if('serviceWorker' in navigator){
       window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
     }
   </script>
+
+  <!-- Supabase browser SDK (local copy) -->
+  <script src="/assets/vendor/supabase/supabase.js"></script>
+
+  <!-- Sanity test: confirm supabaseClient + ensureProfile modules load -->
+  <script type="module">
+    import { getSupabase } from "/assets/js/supabaseClient.js";
+    import { ensureProfile } from "/assets/js/ensureProfile.js";
+    console.log("Supabase client loader ready", { getSupabase, ensureProfile });
+  </script>
+
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
