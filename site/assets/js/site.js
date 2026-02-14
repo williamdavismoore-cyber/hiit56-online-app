@@ -1123,12 +1123,68 @@ function isLocalPreview(){
 async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_name='', biz_tier='', locations=1}){
   const cfg = await loadStripePublicConfig();
   if(!cfg) throw new Error('Stripe config missing (stripe_public_test.json).');
-  const endpoint = (cfg.endpoints && cfg.endpoints.create_checkout_session) ? cfg.endpoints.create_checkout_session : '/api/stripe/create-checkout-session';
+  const endpoint = (cfg.endpoints && cfg.endpoints.create_checkout_session)
+    ? cfg.endpoints.create_checkout_session
+    : '/api/stripe/create-checkout-session';
+
+  // Require real Supabase session when available; otherwise fall back to legacy behavior.
+  let subject_id = '';
+  let subject_type = 'profile';
+  let userEmail = '';
+
+  try{
+    if(window.supabase && window.supabase.createClient){
+      const r = await fetch('/assets/data/supabase_public_test.json', {cache:'no-store'});
+      if(r.ok){
+        const scfg = await r.json();
+        const sUrl = String(scfg.supabase_url || '').trim();
+        const sKey = String(scfg.supabase_anon_key || '').trim();
+        if(sUrl && sKey){
+          const s = window.supabase.createClient(sUrl, sKey);
+          const { data: { session } } = await s.auth.getSession();
+
+          if(!session?.user){
+            const next = encodeURIComponent(location.pathname + location.search);
+            location.href = `/login.html?next=${next}`;
+            return;
+          }
+
+          subject_id = session.user.id;
+          userEmail = session.user.email || '';
+
+          // Best-effort profile upsert (RLS policies already in place)
+          try{
+            await s.from('profiles').upsert({
+              user_id: session.user.id,
+              email: session.user.email ?? null,
+              full_name: session.user.user_metadata?.full_name ?? null,
+            }, { onConflict: 'user_id' });
+          }catch(e){
+            console.warn('[ensureProfile] upsert failed:', e?.message || e);
+          }
+        }
+      }
+    }
+  }catch(e){
+    console.warn('Supabase session check skipped:', e?.message || e);
+  }
+
+  const finalEmail = String(userEmail || email || '').trim();
 
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({tier, plan, biz_tier, locations, email, tenant_slug, tenant_name})
+    body: JSON.stringify({
+      tier,
+      plan,
+      biz_tier,
+      locations,
+      email: finalEmail,
+      tenant_slug,
+      tenant_name,
+      subject_id: subject_id || '',
+      subject_type
+    })
   });
 
   if(!res.ok){
@@ -1142,6 +1198,7 @@ async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_na
   }
   throw new Error('No checkout URL returned.');
 }
+
 
 function injectBanner(html){
   const c = qs('.container');
