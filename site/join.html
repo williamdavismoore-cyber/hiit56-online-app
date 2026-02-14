@@ -10,95 +10,118 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
-
 <body data-page="public-join">
+
   <div class="header">
     <div class="header-inner">
       <a class="logo" href="/">
         <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
       </a>
       <div class="nav">
-        <a href="/workouts/" title="Public workout previews">Workouts</a>
-        <a href="/pricing.html">Pricing</a>
-        <a href="/for-gyms/">For Gyms</a>
-        <a href="/join.html">Join</a>
-        <a href="/login.html" class="primary">Log in</a>
-        <a href="/biz/" title="Staff/Admin only">Business</a>
-        <span class="badge" data-role-pill>Guest</span>
-        <span class="badge" data-tenant-pill style="display:none"></span>
+      <a href="/workouts/" title="Public workout previews">Workouts</a>
+      <a href="/pricing.html">Pricing</a>
+      <a href="/for-gyms/">For Gyms</a>
+      <a href="/join.html" title="Become a member" class="primary">Join</a>
+      <a href="/login.html">Log in</a>
+      <a href="/biz/" title="Staff/Admin only">Business</a>
+      <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="section-title">
-      <h2>Join HIIT56 Online</h2>
-      <div class="small">Stripe Checkout wired (test). Local QA uses demo fallback.</div>
-    </div>
+<div class="container">
+  <div class="section-title">
+    <h2>Join HIIT56 Online</h2>
+    <div class="small">Stripe Checkout wired (test). Local QA uses demo fallback.</div>
+  </div>
 
-    <div class="banner">
-      <strong>Checkpoint note</strong>
-      On a deployed Netlify site (with Functions), Continue will open Stripe Checkout. In local QA preview, Continue uses demo fallback so you can keep testing the app.
-    </div>
+  <div class="banner">
+    <strong>Checkpoint note</strong>
+    On a deployed Netlify site (with Functions), Continue will open Stripe Checkout. In local QA preview, Continue uses demo fallback so you can keep testing the app.
+  </div>
 
-    <div class="card" style="min-height:auto; margin-bottom:14px">
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div class="card" style="min-height:auto">
       <div class="meta">
-        <div class="title">Email</div>
-        <p class="small">Use the same email you log in with. (Once Supabase auth is fully wired, this will auto-fill.)</p>
+        <div class="title">Your email</div>
+        <p class="small">Used for demo entitlements + comps.</p>
         <input class="input" placeholder="you@example.com" data-join-email>
       </div>
     </div>
 
-    <div class="card" style="min-height:auto; margin-bottom:14px">
+    <div class="card" style="min-height:auto">
       <div class="meta">
         <div class="title">Plan</div>
         <p class="small">Best-practice pricing will be finalized in Stripe.</p>
         <select class="select" data-join-plan>
-          <option value="monthly" selected>Monthly</option>
-          <option value="annual">Annual</option>
+          <option value="monthly">Monthly (demo)</option>
+          <option value="annual">Annual (demo)</option>
         </select>
       </div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn primary" data-join-submit>Continue</button>
-      <a class="btn" href="/pricing.html">Back to pricing</a>
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Promo code</div>
+        <p class="small">Optional. You can manage codes as Master Admin.</p>
+        <input class="input" placeholder="CODE" data-join-coupon>
+      </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="container">
-      <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+  <div class="btn-row" style="margin-top:14px">
+    <button class="btn primary" data-join-submit>Continue</button>
+    <a class="btn" href="/pricing.html">View pricing</a>
+    <a class="btn" href="/login.html">Demo role switcher</a>
+  </div>
+</div>
+
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
     </div>
   </div>
+
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Member join scaffold added.</div>
+    </div>
+  </div>
+
 
   <script>
     if('serviceWorker' in navigator){
       window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
     }
   </script>
+<!-- Supabase browser SDK (local copy) -->
+<script src="/assets/vendor/supabase/supabase.js"></script>
 
-  <!-- Supabase browser SDK (local copy) -->
-  <script src="/assets/vendor/supabase/supabase.js"></script>
+<!-- Ensure profile exists if session exists (so checkout can send subject_id) -->
+<script type="module">
+  import { getSupabase } from "/assets/js/supabaseClient.js";
+  import { ensureProfile } from "/assets/js/ensureProfile.js";
 
-  <!-- Ensure profile exists if session exists (so checkout can send subject_id) -->
-  <script type="module">
-    import { getSupabase } from "/assets/js/supabaseClient.js";
-    import { ensureProfile } from "/assets/js/ensureProfile.js";
-
-    try {
-      const supabase = await getSupabase();
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        await ensureProfile(session.user);
-        // If email input exists, auto-fill it
-        const emailInput = document.querySelector('[data-join-email]');
-        if (emailInput && !emailInput.value) emailInput.value = session.user.email || '';
-      }
-    } catch (e) {
-      console.warn('Supabase join boot skipped:', e?.message || e);
+  try {
+    const supabase = await getSupabase();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      await ensureProfile(session.user);
+      // Auto-fill email input if present
+      const emailInput = document.querySelector('[data-join-email]');
+      if (emailInput && !emailInput.value) emailInput.value = session.user.email || '';
     }
-  </script>
+  } catch (e) {
+    console.warn('Supabase join boot skipped:', e?.message || e);
+  }
+</script>
 
   <script src="/assets/js/site.js" defer></script>
 </body>
