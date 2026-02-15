@@ -1129,7 +1129,7 @@ async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_na
 
   // Require real Supabase session when available; otherwise fall back to legacy behavior.
   let subject_id = '';
-  let subject_type = 'profile';
+  let subject_type = 'user';
   let userEmail = '';
 
   try{
@@ -4986,37 +4986,42 @@ function pageJoin(){
   const plan = qs('[data-join-plan]');
   const coupon = qs('[data-join-coupon]');
   const btn = qs('[data-join-submit]');
+
+  // Keep email field populated, but don't require it (Supabase session email will win)
   if(email) email.value = getEmail();
 
   if(btn){
     btn.addEventListener('click', async ()=>{
-      const e = String(email?.value||'').trim();
-      if(!e) return alert('Email required.');
-      setEmail(e);
+      const chosenPlan = String(plan?.value || 'monthly');
 
-      const chosenPlan = String(plan?.value||'monthly');
+      // Optional: store whatever is typed, but do NOT block if blank
+      const e = String(email?.value || '').trim();
+      if(e) setEmail(e);
+
       if(coupon && coupon.value) setAppliedCoupon('member', coupon.value);
 
-      // Try Stripe on deployed Netlify (Functions). Local preview uses demo fallback.
+      // Deployed Netlify: Stripe must either open OR show real error (no more demo redirect)
       if(!isLocalPreview()){
         try{
           btn.disabled = true;
-          btn.textContent = 'Redirectingâ€¦';
-          await startStripeCheckout({tier:'member', plan: chosenPlan, email: e});
-          return; // redirected
+          btn.textContent = 'Redirecting…';
+          await startStripeCheckout({ tier:'member', plan: chosenPlan, email: e });
+          return; // redirected to Stripe
         }catch(err){
-          console.warn('Stripe checkout unavailable, falling back to demo:', err);
+          console.warn('Stripe checkout failed:', err);
           btn.disabled = false;
           btn.textContent = 'Continue';
-          injectBanner('<strong>Stripe checkout unavailable in this preview.</strong> Using demo access so you can keep QA testing.');
+
+          const msg = (err && err.message) ? err.message : String(err);
+          injectBanner(
+            <strong>Stripe checkout failed.</strong><div class="small" style="margin-top:6px"></div>
+          );
+          return;
         }
       }
 
-      // Demo fallback (until Supabase entitlement sync is wired)
-      setRole('member');
-      setTenant({slug:'', name:''});
-      localStorage.setItem('hiit56_member_plan_demo', chosenPlan);
-      location.href = '/app/';
+      // Local preview only: tell the truth and stop
+      injectBanner('<strong>Local preview mode.</strong> Stripe requires a deployed Netlify site with Functions. Demo access stays available for local QA.');
     });
   }
 }
