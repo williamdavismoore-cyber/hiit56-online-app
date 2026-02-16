@@ -1,5 +1,0 @@
-/api/stripe/create-checkout-session  /.netlify/functions/stripe_create_checkout_session  200
-/api/stripe/create-portal-session  /.netlify/functions/stripe_create_portal_session  200
-/api/stripe/webhook  /.netlify/functions/stripe_webhook  200
-
-/api/health  /.netlify/functions/health  200

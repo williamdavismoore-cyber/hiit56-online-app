@@ -5,30 +5,3 @@
 
 [functions]
   node_bundler = "esbuild"
-
-[build.environment]
-  NODE_VERSION = "18"
-  
-[[redirects]]
-  from = "/api/health"
-  to = "/.netlify/functions/health"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/stripe/create-checkout-session"
-  to = "/.netlify/functions/stripe_create_checkout_session"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/stripe/create-portal-session"
-  to = "/.netlify/functions/stripe_create_portal_session"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/stripe/webhook"
-  to = "/.netlify/functions/stripe_webhook"
-  status = 200
-  force = true
