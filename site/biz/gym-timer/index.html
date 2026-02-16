@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gym Timer — Business — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="biz-gym-timer">
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+        <a href="/biz/">Business</a>
+        <a href="/biz/gym-timer/" class="primary">Gym Timer</a>
+        <a href="/biz/moves/">Move Library</a>
+        <a href="/app/" title="Member side">Member</a>
+        <a href="/login.html" title="Switch role">Role</a>
+        <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">
+      <h2>Gym Timer (Prototype)</h2>
+      <div class="small">Station board + beeps + time cap (includes transitions)</div>
+    </div>
+
+    <div class="banner" data-biz-gate style="display:none">
+      <strong>Business login required</strong>
+      Switch your role to <span class="badge">Business</span> on the Role page to access this feature.
+    </div>
+
+    <div class="timer-config card" data-biz-only>
+      <div class="meta" style="padding:16px">
+        <div class="title">Setup</div>
+        <p class="small">Choose a gym demo, optionally apply a time cap, set beep volume, then tap Start.</p>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-small btn-ghost" data-open-builder>Program Builder</button>
+          <button class="btn btn-small btn-ghost" data-fullscreen>Fullscreen</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <div class="small">Demo</div>
+            <select data-demo-select></select>
+          </label>
+
+          <label>
+            <div class="small">Time cap (minutes)</div>
+            <input type="number" min="1" step="1" value="42" data-cap-min>
+          </label>
+
+          <label>
+            <div class="small">Cap adjustment pool</div>
+            <select data-cap-pool>
+              <option value="work">Adjust Work</option>
+              <option value="rest">Adjust Rest</option>
+              <option value="transitions">Adjust Transitions</option>
+              <option value="all" selected>Adjust All</option>
+            </select>
+          </label>
+          <label>
+            <div class="small">If under cap</div>
+            <select data-cap-under>
+              <option value="adjust" selected>Spread time into selected pool</option>
+              <option value="finisher">Add finisher block</option>
+            </select>
+          </label>
+
+          <label>
+            <div class="small">Preview speed</div>
+            <select data-speed>
+              <option value="1">1×</option>
+              <option value="2">2×</option>
+              <option value="4" selected>4×</option>
+              <option value="10">10×</option>
+            </select>
+          </label>
+
+          <label>
+            <div class="small">Beep volume</div>
+            <input type="range" min="0" max="100" value="70" data-beep-volume>
+          </label>
+          <label>
+            <div class="row" style="gap:10px;align-items:center">
+              <input type="checkbox" data-countdown-beeps>
+              <span class="small">Countdown beeps (3-2-1)</span>
+            </div>
+          </label>
+          <label>
+            <div class="row" style="gap:10px;align-items:center">
+              <input type="checkbox" data-keep-awake>
+              <span class="small">Keep screen awake</span>
+            </div>
+          </label>
+          <label>
+            <div class="row" style="gap:10px;align-items:center">
+              <input type="checkbox" data-auto-pause-hidden>
+              <span class="small">Auto-pause if backgrounded</span>
+            </div>
+          </label>
+
+          <div class="btn-row" style="align-items:flex-end">
+            <button class="btn" data-test-beep>Test beep</button>
+            <button class="btn" data-apply-cap>Apply cap</button>
+            <button class="btn" data-undo-cap style="display:none">Undo cap</button>
+            <button class="btn primary" data-start>Start</button>
+          </div>
+        </div>
+
+        <div class="small" style="margin-top:10px">
+          Total time: <span class="badge" data-total-time>--:--</span>
+          <span class="small" data-cap-status style="margin-left:8px"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timer-run card" style="margin-top:16px" data-biz-only>
+      <div class="gym-run">
+        <div class="gym-board">
+          <div class="title">Stations</div>
+          <div class="station-grid" data-station-grid></div>
+        </div>
+
+        <div class="gym-center">
+          <div class="badge-row">
+            <span class="badge" data-seg-kind>—</span>
+            <span class="badge" data-rotation>Station —</span>
+            <span class="badge" data-move-slot>Move —</span>
+            <span class="badge" data-round>Round —</span>
+          </div>
+          <div class="timer-clock big" data-clock>00:00</div>
+
+          <div class="timer-controls">
+            <button class="btn" data-pause>Pause</button>
+            <button class="btn" data-skip>Skip</button>
+            <button class="btn danger" data-reset>Reset</button>
+          </div>
+
+          <div class="small" style="margin-top:8px">
+            Next: <span data-next>—</span>
+          </div>
+        </div>
+
+        <div class="gym-right">
+          <div class="title">Timeline</div>
+          <div class="small">First 18 segments shown</div>
+          <div class="timeline" data-timeline></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="modal" id="stationModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-station-modal-title>Station</div>
+        <button class="modal-close" data-station-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-station-modal-body style="position:relative"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Gym timer prototype added.</div>
+    </div>
+  </div>
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Optional dependencies for vimeo_thumbnail_pipeline.py
+# Install with: pip install -r tools/requirements_thumbs.txt
+
+requests
+pillow
+opencv-python

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HIIT56 • Gym Timer Builder</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="/assets/branding/favicon.ico">
+</head>
+<body data-page="biz-gym-timer-builder">
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/biz/">
+        <img src="/assets/branding/HIIT56_Logo_FINAL.png" alt="HIIT56" class="brand-logo">
+      </a>
+      <nav class="nav">
+        <a href="/biz/gym-timer/" class="active">Gym Timer</a>
+        <a href="/biz/moves/">Moves</a>
+        <a href="/account/">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-hero">
+      <h1>Gym Timer Program Builder</h1>
+      <p class="small muted">
+        Build a station-based program (like your GymBoss flow). Save locally as a Template (admins) or Today’s Mod (staff).
+      </p>
+      <div class="row">
+        <a class="btn btn-ghost" href="/biz/gym-timer/">Back to Gym Timer</a>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <div class="title">Structure</div>
+        <div class="form-grid">
+          <label>
+            <div class="small">Program name</div>
+            <input class="input" placeholder="Example: Tuesday • Station HIIT" data-name>
+          </label>
+
+          <label>
+            <div class="small">Stations</div>
+            <input class="input" type="number" min="1" max="20" value="6" data-station-count>
+          </label>
+
+          <label>
+            <div class="small">People per station</div>
+            <input class="input" type="number" min="0" max="50" value="0" data-people-per-station>
+          </label>
+
+          <label>
+            <div class="small">Moves per station</div>
+            <select class="input" data-moves-per-station>
+              <option value="1">1 (A only)</option>
+              <option value="2" selected>2 (A/B)</option>
+            </select>
+          </label>
+
+          <label>
+            <div class="small">Work (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="1" data-work-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-work-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Rest between rounds (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-rest-mm>
+              <input class="input" type="number" min="0" max="59" value="10" data-rest-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Rounds per move</div>
+            <input class="input" type="number" min="1" max="20" value="3" data-rounds-per-move>
+          </label>
+
+          <label>
+            <div class="small">Transition between A/B (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-move-trans-mm>
+              <input class="input" type="number" min="0" max="59" value="10" data-move-trans-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Transition between stations (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-station-trans-mm>
+              <input class="input" type="number" min="0" max="59" value="30" data-station-trans-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Rounds through stations</div>
+            <input class="input" type="number" min="1" max="20" value="1" data-loops>
+          </label>
+
+          <label>
+            <div class="small">Rest between rounds through stations (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="1" data-rest-between-loops-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-rest-between-loops-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="row" style="gap:10px;align-items:center">
+              <input type="checkbox" data-no-repeats checked>
+              <span class="small">No repeats when randomizing</span>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Avoid words (comma-separated)</div>
+            <input class="input" placeholder="burpee, sprint" data-avoid-words>
+          </label>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn btn-ghost" data-render>Update stations</button>
+          <button class="btn btn-ghost" data-randomize>Randomize moves</button>
+          <button class="btn" data-generate>Generate preview</button>
+        </div>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn" data-save-template>Save as Template</button>
+          <button class="btn" data-save-mod>Save as Today’s Mod</button>
+          <button class="btn btn-ghost" data-start-now>Save & Start</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="title">Stations</div>
+        <div class="small muted">Pick station moves (or randomize).</div>
+        <div data-stations style="margin-top:12px"></div>
+      </section>
+
+      <section class="card">
+        <div class="title">Preview</div>
+        <div data-preview class="small muted">Generate a preview to see total time and station list.</div>
+
+        <div class="divider"></div>
+
+        <div class="title">Export</div>
+        <textarea class="input" rows="10" data-export placeholder="Generate a preview to export JSON…"></textarea>
+
+        <div class="divider"></div>
+
+        <div class="title">Import</div>
+        <textarea class="input" rows="8" data-import placeholder="Paste program JSON here…"></textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-ghost" data-import-btn>Import</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container small muted">CP19 • Local prototype • Gym timer builder.</div>
+  </footer>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

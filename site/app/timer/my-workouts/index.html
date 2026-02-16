@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HIIT56 • My Workouts</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="/assets/branding/favicon.ico">
+</head>
+<body data-page="member-my-workouts">
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/app/">
+        <img src="/assets/branding/HIIT56_Logo_FINAL.png" alt="HIIT56" class="brand-logo">
+      </a>
+      <nav class="nav">
+        <a href="/app/workouts/">Library</a>
+        <a href="/app/timer/" class="active">Timer</a>
+        <a href="/account/">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-hero">
+      <h1>My Workouts</h1>
+      <p class="small muted">Saved workouts live in your browser storage for now. Export/import lets you move them between devices.</p>
+      <div class="row">
+        <a class="btn" href="/app/timer/builder/">Build a workout</a>
+        <a class="btn btn-ghost" href="/app/timer/">Back to Timer</a>
+      </div>
+    </div>
+
+    <section data-list class="stack"></section>
+
+    <section class="card" style="margin-top:16px">
+      <div class="title">Import Workout</div>
+      <textarea class="input" rows="8" data-import placeholder="Paste workout JSON here…"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="btn btn-ghost" data-import-btn>Import</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container small muted">CP19 • Local prototype • My Workouts.</div>
+  </footer>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

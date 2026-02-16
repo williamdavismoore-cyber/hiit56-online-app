@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Onboarding — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="biz-onboarding">
+
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+        <a href="/biz/">Business</a>
+        <a href="/biz/gym-timer/">Gym Timer</a>
+        <a href="/biz/moves/">Move Library</a>
+        <a href="/biz/onboarding/" class="primary">Onboarding</a>
+        <a href="/biz/account/">Account</a>
+        <a href="/app/" title="Member side">Member</a>
+        <a href="/login.html" title="Switch role">Role</a>
+        <span class="badge" data-role-pill>Guest</span>
+        <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="section-title">
+    <h2>Onboarding (Business)</h2>
+    <div class="small">Tenant: <span class="badge" data-onboard-tenant>—</span></div>
+  </div>
+
+  <div class="banner">
+    <strong>Checkpoint note</strong>
+    This is a guided scaffold. In Supabase, this will become a tenant setup wizard (branding, staff invites, default timers, move library presets).
+  </div>
+
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Step 1 — Confirm admin</div>
+        <p class="small">Role: <span class="badge" data-onboard-role>—</span></p>
+        <p class="small">Next: Invite staff (future).</p>
+      </div>
+      <div class="pill">Soon</div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Step 2 — Branding</div>
+        <p class="small">Logo, colors, and hero graphic per tenant.</p>
+      </div>
+      <div class="pill">Soon</div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Step 3 — Default Timer Templates</div>
+        <p class="small">Create templates for your class types.</p>
+      </div>
+      <div class="pill">Soon</div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Step 4 — Go live</div>
+        <p class="small">Enable billing + publish tenant portal.</p>
+      </div>
+      <div class="pill">Soon</div>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:14px">
+    <a class="btn primary" href="/biz/">Go to Business Portal</a>
+    <a class="btn" href="/biz/account/">Account</a>
+  </div>
+</div>
+
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Business onboarding scaffold added.</div>
+    </div>
+  </div>
+
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

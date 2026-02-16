@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workout — HIIT56 (Member)</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="member-workout-detail">
+  <div class="header">
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+    </a>
+    <div class="nav">
+      <a href="/app/workouts/" class="primary">Library</a>
+      <a href="/app/timer/">Timer</a>
+      <a href="/workouts/" title="Public workout previews">Public preview</a>
+      <a href="/biz/" title="Staff/Admin only">Business</a>
+      <a href="/login.html" title="Switch role">Role</a>
+      <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">
+    <h2 data-workout-title>Workout</h2>
+    <div class="small" data-workout-category></div>
+  </div>
+
+  <div class="banner" data-taxonomy-banner>
+    <strong>Draft category</strong>
+    Category names/groupings are placeholder until you supply the final taxonomy.
+  </div>
+
+  <div class="hero">
+    <div class="hero-grid" style="grid-template-columns:1fr">
+      <div class="hero-video" data-workout-player></div>
+      <div class="btn-row" style="margin-top:12px">
+        <a class="btn" data-back-to-category href="/app/workouts/">Back to library</a>
+        <button class="btn primary" disabled title="Coming soon">Save to Favorites (coming soon)</button>
+      </div>
+      <p class="small" data-workout-meta style="margin:10px 0 0 0"></p>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>Related</h2>
+    <div class="small">Same category</div>
+  </div>
+  <div class="grid" data-related-root></div>
+</div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <div class="title" data-modal-title>Video</div>
+      <button class="modal-close" data-modal-close>Close</button>
+    </div>
+    <div class="modal-body" data-modal-body></div>
+  </div>
+</div>
+
+  <div class="footer">
+  <div class="container">
+    <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+  </div>
+</div>
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

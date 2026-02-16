@@ -1,0 +1,311 @@
+{
+  "version": "v1.1",
+  "notes": "CP10: implemented Adjustments_2-8-23 \u2014 added HIIT56 Specials/Mash-Ups category (auto-detected mash-up/special-guest titles), moved HIIT 21 into Specialty HIIT, separated Ab Lab from Recovery, updated group names. Hero + teasers selected from latest 10 per category; prefer titles without dates.\nCP12: Moved HIIT56 Specials/Mash-Ups under HIIT (listed last); removed as standalone category.",
+  "categories": [
+    {
+      "slug": "hiit",
+      "title": "HIIT",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 106,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 466857627,
+        "embed_url": "https://player.vimeo.com/video/466857627?h=75436a588c",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit.webp",
+      "teaser_video_ids": [
+        498738636,
+        498663068,
+        471787263,
+        591262059,
+        568612296,
+        560630038
+      ],
+      "specials_video_ids": [
+        591262059,
+        568612296,
+        560630038,
+        552153016,
+        546205461,
+        521613080,
+        516383560,
+        514021255,
+        474183012,
+        461634417,
+        461634180,
+        455110721,
+        450686979,
+        436701536
+      ],
+      "specials_title": "HIIT56 Specials/Mash-Ups"
+    },
+    {
+      "slug": "hiit-beginner",
+      "title": "HIIT Beginner",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 13,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 511580703,
+        "embed_url": "https://player.vimeo.com/video/511580703?h=86f30771d7",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-beginner.webp",
+      "teaser_video_ids": [
+        509261162,
+        503459215,
+        473011315
+      ]
+    },
+    {
+      "slug": "hiit-upper-body",
+      "title": "HIIT Upper Body",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 72,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 749715324,
+        "embed_url": "https://player.vimeo.com/video/749715324?h=975b7e3653",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-upper-body.webp",
+      "teaser_video_ids": [
+        736707414,
+        723619305,
+        720479886
+      ]
+    },
+    {
+      "slug": "hiit-lower-body",
+      "title": "HIIT Lower Body",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 64,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 737740659,
+        "embed_url": "https://player.vimeo.com/video/737740659?h=f2bfa59643",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-lower-body.webp",
+      "teaser_video_ids": [
+        732260751,
+        722360087,
+        718548518
+      ]
+    },
+    {
+      "slug": "hiit-total-body",
+      "title": "HIIT Total Body",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 51,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 817315241,
+        "embed_url": "https://player.vimeo.com/video/817315241?h=ac93c20d03",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-total-body.webp",
+      "teaser_video_ids": [
+        810933814,
+        750058905,
+        742880276
+      ]
+    },
+    {
+      "slug": "max-cardio-hiit",
+      "title": "Max Cardio HIIT",
+      "group": "HIIT",
+      "status": "APPROVED",
+      "class_count": 7,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 821754541,
+        "embed_url": "https://player.vimeo.com/video/821754541?h=3dba738ced",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/max-cardio-hiit.webp",
+      "teaser_video_ids": [
+        820700119,
+        774363206,
+        753426001
+      ]
+    },
+    {
+      "slug": "heavy-hiit",
+      "title": "Heavy HIIT",
+      "group": "Specialty HIIT",
+      "status": "APPROVED",
+      "class_count": 56,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 470970380,
+        "embed_url": "https://player.vimeo.com/video/470970380?h=f00bfc65b9",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/heavy-hiit.webp",
+      "teaser_video_ids": [
+        469072330,
+        467726159,
+        466280832
+      ]
+    },
+    {
+      "slug": "hiit-kickboxing",
+      "title": "HIIT Kickboxing",
+      "group": "Specialty HIIT",
+      "status": "APPROVED",
+      "class_count": 47,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 461384193,
+        "embed_url": "https://player.vimeo.com/video/461384193?h=ee42d6c32a",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-kickboxing.webp",
+      "teaser_video_ids": [
+        460540577,
+        458999485,
+        458124143
+      ]
+    },
+    {
+      "slug": "hiit-21",
+      "title": "HIIT 21",
+      "group": "Specialty HIIT",
+      "status": "APPROVED",
+      "class_count": 62,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 528527308,
+        "embed_url": "https://player.vimeo.com/video/528527308?h=e35dc2033f",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-21.webp",
+      "teaser_video_ids": [
+        525072859,
+        522012514,
+        519559536
+      ]
+    },
+    {
+      "slug": "challenges",
+      "title": "Challenges",
+      "group": "Challenges",
+      "status": "APPROVED",
+      "class_count": 6,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 759516695,
+        "embed_url": "https://player.vimeo.com/video/759516695?h=64fb8875b7",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/challenges.webp",
+      "teaser_video_ids": [
+        758939389,
+        758552561,
+        758344454
+      ]
+    },
+    {
+      "slug": "stretch-recovery",
+      "title": "Stretch & Recovery",
+      "group": "Recovery",
+      "status": "APPROVED",
+      "class_count": 44,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 537524725,
+        "embed_url": "https://player.vimeo.com/video/537524725?h=a86181e97b",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/stretch-recovery.webp",
+      "teaser_video_ids": [
+        471716712,
+        466573180,
+        465189246
+      ]
+    },
+    {
+      "slug": "ab-lab",
+      "title": "Ab Lab",
+      "group": "Ab Lab",
+      "status": "APPROVED",
+      "class_count": 8,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 440660030,
+        "embed_url": "https://player.vimeo.com/video/440660030?h=07303031b3",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/ab-lab.webp",
+      "teaser_video_ids": [
+        434331418,
+        432819989,
+        428488273
+      ]
+    },
+    {
+      "slug": "hiit-yoga",
+      "title": "HIIT Yoga",
+      "group": "Yoga",
+      "status": "APPROVED",
+      "class_count": 11,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 439974408,
+        "embed_url": "https://player.vimeo.com/video/439974408?h=a62b4417fd",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/hiit-yoga.webp",
+      "teaser_video_ids": [
+        437841068,
+        433634160,
+        431472110
+      ]
+    },
+    {
+      "slug": "yoga-flow",
+      "title": "Yoga Flow",
+      "group": "Yoga",
+      "status": "APPROVED",
+      "class_count": 14,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 439977134,
+        "embed_url": "https://player.vimeo.com/video/439977134?h=3a962dfe9b",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/yoga-flow.webp",
+      "teaser_video_ids": [
+        437841707,
+        435819113,
+        433639646
+      ]
+    },
+    {
+      "slug": "kids-hiit-funhouse",
+      "title": "Kids HIIT Funhouse",
+      "group": "Kids",
+      "status": "APPROVED",
+      "class_count": 58,
+      "hero": {
+        "type": "vimeo_latest_class",
+        "video_id": 473009176,
+        "embed_url": "https://player.vimeo.com/video/473009176?h=d77da582ed",
+        "source": "latest10_no_date_preferred"
+      },
+      "hero_poster": "/assets/placeholders/kids-hiit-funhouse.webp",
+      "teaser_video_ids": [
+        472743480,
+        471181207,
+        470327573
+      ]
+    }
+  ]
+}

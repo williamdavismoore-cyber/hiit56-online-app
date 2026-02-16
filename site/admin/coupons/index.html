@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Coupons</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="admin-coupons">
+
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+      <a href="/admin/">Admin</a>
+      <a href="/admin/tenants/">Tenants</a>
+      <a href="/admin/coupons/" class="primary">Coupons</a>
+      <a href="/admin/comps/">Comps</a>
+      <a href="/pricing.html">Member pricing</a>
+      <a href="/for-gyms/pricing.html">Business pricing</a>
+      <a href="/login.html" title="Switch role">Role</a>
+      <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="section-title">
+    <h2>Coupons (Demo)</h2>
+    <div class="small">Create promo codes for member + business tiers</div>
+  </div>
+
+  <div class="banner">
+    <strong>Checkpoint note</strong>
+    This writes coupon definitions to localStorage so you can test apply/clear in Account pages. Stripe coupon setup will replace this.
+  </div>
+
+  <div class="card" style="min-height:auto; margin-top:10px">
+    <div class="meta">
+      <div class="title">Create coupon</div>
+      <div class="toolbar">
+        <input class="input" placeholder="CODE (ex: FREEWEEK)" data-coupon-code>
+        <select class="select" data-coupon-scope>
+          <option value="member">Member</option>
+          <option value="biz">Business</option>
+        </select>
+        <input class="input" placeholder="Percent off (optional)" data-coupon-pct>
+        <input class="input" placeholder="Amount off (optional)" data-coupon-amt>
+        <input class="input" placeholder="Note (shown in account)" data-coupon-note>
+        <button class="btn primary" data-coupon-add>Add</button>
+      </div>
+      <p class="small">This is a demo scaffold. Real enforcement happens in Stripe Checkout + webhook entitlement sync.</p>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>Member coupons</h2>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Note</th>
+        <th>%</th>
+        <th>$</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody data-coupon-list-member></tbody>
+  </table>
+
+  <div class="section-title" style="margin-top:18px">
+    <h2>Business coupons</h2>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Note</th>
+        <th>%</th>
+        <th>$</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody data-coupon-list-biz></tbody>
+  </table>
+
+  <div class="btn-row" style="margin-top:14px">
+    <a class="btn" href="/admin/">Back to Admin</a>
+  </div>
+</div>
+
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Admin coupons scaffold added.</div>
+    </div>
+  </div>
+
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

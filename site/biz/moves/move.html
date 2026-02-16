@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Move — HIIT56 (Business)</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="biz-move-detail">
+  <div class="header">
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+    </a>
+    <div class="nav">
+        <a href="/biz/">Business</a>
+        <a href="/biz/gym-timer/">Gym Timer</a>
+        <a href="/biz/moves/" class="primary">Move Library</a>
+        <a href="/app/" title="Member side">Member</a>
+        <a href="/login.html" title="Switch role">Role</a>
+        <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title">
+    <h2 data-move-title>Move</h2>
+    <div class="small">Move demo preview</div>
+  </div>
+
+  <div class="banner" data-biz-gate style="display:none">
+    <strong>Business access required</strong>
+    This page will be gated by real Staff/Admin login in a later checkpoint. For now, use the demo login to switch roles.
+    <div class="btn-row" style="margin-top:10px">
+      <a class="btn primary" href="/login.html">Go to demo login</a>
+      <a class="btn" href="/">Back to site</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-grid" style="grid-template-columns:1fr">
+      <div class="hero-video" data-move-player></div>
+      <div class="btn-row" style="margin-top:12px">
+        <a class="btn" href="/biz/moves/">Back to Move Library</a>
+        <button class="btn" disabled title="Coming soon">Edit tags (coming soon)</button>
+      </div>
+      <p class="small" data-move-meta style="margin:10px 0 0 0"></p>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>More moves</h2>
+    <div class="small">From the same demo library</div>
+  </div>
+  <div class="grid" data-related-root></div>
+</div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <div class="title" data-modal-title>Video</div>
+      <button class="modal-close" data-modal-close>Close</button>
+    </div>
+    <div class="modal-body" data-modal-body></div>
+  </div>
+</div>
+
+  <div class="footer">
+  <div class="container">
+    <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+  </div>
+</div>
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

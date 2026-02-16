@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "equipment": [
+    {
+      "id": "dumbbell",
+      "label": "Dumbbells",
+      "aliases": [
+        "db",
+        "dumbbell",
+        "dumbbells"
+      ]
+    },
+    {
+      "id": "kettlebell",
+      "label": "Kettlebells",
+      "aliases": [
+        "kb",
+        "kettlebell",
+        "kettlebells"
+      ]
+    },
+    {
+      "id": "barbell",
+      "label": "Barbell",
+      "aliases": [
+        "barbell"
+      ]
+    },
+    {
+      "id": "weight-plates",
+      "label": "Weight Plates",
+      "aliases": [
+        "plates",
+        "weight plates",
+        "weight-plates"
+      ]
+    },
+    {
+      "id": "bench",
+      "label": "Bench",
+      "aliases": [
+        "bench"
+      ]
+    },
+    {
+      "id": "cable-machine",
+      "label": "Cable Machine",
+      "aliases": [
+        "cable",
+        "cables",
+        "cable machine",
+        "cable-machine"
+      ]
+    },
+    {
+      "id": "resistance-band",
+      "label": "Resistance Band",
+      "aliases": [
+        "band",
+        "bands",
+        "resistance band",
+        "resistance-band"
+      ]
+    },
+    {
+      "id": "trx",
+      "label": "TRX Straps",
+      "aliases": [
+        "trx",
+        "trx straps"
+      ]
+    },
+    {
+      "id": "bosu",
+      "label": "BOSU Ball",
+      "aliases": [
+        "bosu",
+        "bosu ball"
+      ]
+    },
+    {
+      "id": "step",
+      "label": "Step Platform",
+      "aliases": [
+        "step",
+        "step platform",
+        "stepper"
+      ]
+    },
+    {
+      "id": "gliders",
+      "label": "Gliders",
+      "aliases": [
+        "glider",
+        "gliders"
+      ]
+    },
+    {
+      "id": "sliders",
+      "label": "Sliders",
+      "aliases": [
+        "slider",
+        "sliders"
+      ]
+    },
+    {
+      "id": "chair",
+      "label": "Chair",
+      "aliases": [
+        "chair"
+      ]
+    },
+    {
+      "id": "medicine-ball",
+      "label": "Medicine Ball",
+      "aliases": [
+        "med ball",
+        "medicine ball",
+        "medicine-ball"
+      ]
+    },
+    {
+      "id": "sand-ball",
+      "label": "Sand Ball",
+      "aliases": [
+        "sand ball",
+        "sand-ball",
+        "slam ball",
+        "sandbag"
+      ]
+    },
+    {
+      "id": "swiss-ball",
+      "label": "Swiss Ball",
+      "aliases": [
+        "swiss ball",
+        "stability ball",
+        "exercise ball",
+        "swiss-ball"
+      ]
+    },
+    {
+      "id": "mat",
+      "label": "Exercise Mat",
+      "aliases": [
+        "mat",
+        "exercise mat",
+        "yoga mat"
+      ]
+    },
+    {
+      "id": "mini-mat",
+      "label": "Mini Mat",
+      "aliases": [
+        "mini mat",
+        "mini-mat"
+      ]
+    },
+    {
+      "id": "foam-roller",
+      "label": "Foam Roller",
+      "aliases": [
+        "foam roller",
+        "roller",
+        "foam-roller"
+      ]
+    },
+    {
+      "id": "cone",
+      "label": "Cone",
+      "aliases": [
+        "cone",
+        "cones"
+      ]
+    },
+    {
+      "id": "wedge",
+      "label": "Wedge",
+      "aliases": [
+        "wedge"
+      ]
+    },
+    {
+      "id": "riser",
+      "label": "Riser",
+      "aliases": [
+        "riser",
+        "risers"
+      ]
+    },
+    {
+      "id": "nt-loop",
+      "label": "NT Loop",
+      "aliases": [
+        "nt loop",
+        "nt-loop",
+        "loop band"
+      ]
+    },
+    {
+      "id": "hex-bar",
+      "label": "Hex Bar",
+      "aliases": [
+        "hex bar",
+        "trap bar",
+        "hex-bar"
+      ]
+    },
+    {
+      "id": "curl-bar",
+      "label": "Curl Bar",
+      "aliases": [
+        "curl bar",
+        "ez bar",
+        "curl-bar",
+        "ez-bar"
+      ]
+    },
+    {
+      "id": "landmine",
+      "label": "Landmine Attachment",
+      "aliases": [
+        "landmine",
+        "landmine attachment"
+      ]
+    },
+    {
+      "id": "leg-strap",
+      "label": "Leg Strap",
+      "aliases": [
+        "leg strap",
+        "leg-strap"
+      ]
+    },
+    {
+      "id": "v-handle",
+      "label": "V-Handle",
+      "aliases": [
+        "v handle",
+        "v-handle",
+        "vbar",
+        "v-bar"
+      ]
+    },
+    {
+      "id": "cable-bar-small",
+      "label": "Cable Bar (Small)",
+      "aliases": [
+        "small cable bar",
+        "cable bar small",
+        "cable-bar-small"
+      ]
+    },
+    {
+      "id": "cable-bar-lat",
+      "label": "Cable Bar (Lat)",
+      "aliases": [
+        "lat cable bar",
+        "cable bar lat",
+        "cable-bar-lat"
+      ]
+    },
+    {
+      "id": "cable-bar-large",
+      "label": "Cable Bar (Large)",
+      "aliases": [
+        "large cable bar",
+        "cable bar large",
+        "cable-bar-large"
+      ]
+    }
+  ]
+}

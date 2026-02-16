@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Portal — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="biz-home">
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+        <a href="/biz/" class="primary">Business</a>
+        <a href="/biz/gym-timer/">Gym Timer</a>
+        <a href="/biz/moves/">Move Library</a>
+        <a href="/biz/onboarding/">Onboarding</a>
+        <a href="/biz/account/">Account</a>
+        <a href="/app/" title="Member side">Member</a>
+        <a href="/login.html" title="Switch role">Role</a>
+        <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">
+      <h2>Business Portal</h2>
+      <div class="small">Admin / Staff tools (Gym timer system)</div>
+    </div>
+
+    <div class="banner">
+      <strong>Business build in progress</strong>
+      This checkpoint adds the first Gym Timer prototype (beeps + volume + time cap) and keeps expanding the staff move library.
+    </div>
+
+    <div class="grid">
+      <a class="card" style="min-height:auto" href="/biz/gym-timer/">
+        <div class="meta">
+          <div class="title">Gym Timer (Prototype)</div>
+          <p class="small">Run a demo class timeline with station board + beeps + time cap.</p>
+        </div>
+        <div class="pill">Built</div>
+      </a>
+
+      <a class="card" style="min-height:auto" href="/biz/moves/">
+        <div class="meta">
+          <div class="title">Move Library (Staff-only)</div>
+          <p class="small">Search moves and play demo videos in-app (trainer form-check tool).</p>
+        </div>
+        <div class="pill">Built</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Category taxonomy is owner-approved (v1).</div>
+    </div>
+  </div>
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

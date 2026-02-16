@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start a Business — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="public-biz-start">
+
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+      <a href="/workouts/" title="Public workout previews">Workouts</a>
+      <a href="/pricing.html">Pricing</a>
+      <a href="/for-gyms/" class="primary">For Gyms</a>
+      <a href="/join.html" title="Become a member">Join</a>
+      <a href="/login.html">Log in</a>
+      <a href="/biz/" title="Staff/Admin only">Business</a>
+      <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="section-title">
+    <h2>Start a Business Portal</h2>
+    <div class="small">Business portal signup (tenant + Stripe Checkout test wiring)</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Business name</div>
+        <p class="small">We generate a tenant slug from this name (demo).</p>
+        <input class="input" placeholder="Example Gym" data-biz-name>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Admin email</div>
+        <p class="small">Used for demo entitlements + comps.</p>
+        <input class="input" placeholder="owner@example.com" data-biz-email>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Business tier</div>
+        <p class="small">Starter or Pro (per-location billing).</p>
+        <select class="select" data-biz-tier>
+          <option value="starter">Starter</option>
+          <option value="pro" selected>Pro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Billing cycle</div>
+        <p class="small">Monthly or annual (discounted).</p>
+        <select class="select" data-biz-plan>
+          <option value="monthly">Monthly</option>
+          <option value="annual">Annual</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Locations</div>
+        <p class="small">Quantity for per-location subscriptions.</p>
+        <input class="input" type="number" min="1" max="50" step="1" value="1" data-biz-locations>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Promo code</div>
+        <p class="small">Optional. Managed by Master Admin.</p>
+        <input class="input" placeholder="CODE" data-biz-coupon>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:14px">
+    <button class="btn primary" data-biz-submit>Create business portal</button>
+    <a class="btn" href="/for-gyms/pricing.html">View business pricing</a>
+  </div>
+</div>
+
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Business tenant signup scaffold added.</div>
+    </div>
+  </div>
+
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

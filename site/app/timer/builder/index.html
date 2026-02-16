@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HIIT56 • Timer Builder</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="/assets/branding/favicon.ico">
+</head>
+<body data-page="member-timer-builder">
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/app/">
+        <img src="/assets/branding/HIIT56_Logo_FINAL.png" alt="HIIT56" class="brand-logo">
+      </a>
+      <nav class="nav">
+        <a href="/app/workouts/">Library</a>
+        <a href="/app/timer/" class="active">Timer</a>
+        <a href="/account/">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-hero">
+      <h1>Workout Builder</h1>
+      <p class="small muted">
+        Build an interval workout from move videos, save it locally to <strong>My Workouts</strong>, or start it immediately.
+        (Local-only for now — we’ll sync with Supabase later.)
+      </p>
+      <div class="row">
+        <a class="btn btn-ghost" href="/app/timer/">Back to Timer</a>
+        <a class="btn btn-ghost" href="/app/timer/my-workouts/">My Workouts</a>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <div class="title">Structure</div>
+        <div class="form-grid">
+          <label>
+            <div class="small">Workout name</div>
+            <input class="input" placeholder="Example: HIIT56 • 42 Min Burner" data-name>
+          </label>
+
+          <label>
+            <div class="small">Stages</div>
+            <input class="input" type="number" min="1" max="20" value="8" data-stage-count>
+          </label>
+
+          <label>
+            <div class="small">Moves per stage</div>
+            <input class="input" type="number" min="1" max="6" value="3" data-moves-per-stage>
+          </label>
+
+          <label>
+            <div class="small">Rounds per stage</div>
+            <input class="input" type="number" min="1" max="10" value="1" data-rounds-per-stage>
+          </label>
+
+          <label>
+            <div class="small">Work (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="1" data-work-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-work-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Rest between rounds (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-rest-mm>
+              <input class="input" type="number" min="0" max="59" value="20" data-rest-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Transition between moves (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-move-trans-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-move-trans-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Transition between stages (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-stage-trans-mm>
+              <input class="input" type="number" min="0" max="59" value="50" data-stage-trans-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Warmup (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-warmup-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-warmup-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Cooldown (mm:ss)</div>
+            <div class="row" style="gap:8px">
+              <input class="input" type="number" min="0" max="99" value="0" data-cooldown-mm>
+              <input class="input" type="number" min="0" max="59" value="0" data-cooldown-ss>
+            </div>
+          </label>
+
+          <label>
+            <div class="row" style="gap:10px;align-items:center">
+              <input type="checkbox" data-no-repeats checked>
+              <span class="small">No repeats when randomizing</span>
+            </div>
+          </label>
+
+          <label>
+            <div class="small">Avoid words (comma-separated)</div>
+            <input class="input" placeholder="burpee, sprint" data-avoid-words>
+          </label>
+
+          <div class="divider" style="margin:12px 0"></div>
+
+          <div class="small">Random move filters</div>
+          <div class="small muted">Choose the muscle groups for random moves. Leave <strong>All moves</strong> enabled for general random.</div>
+
+          <label>
+            <div class="row" style="gap:10px;align-items:center;margin-top:8px">
+              <input type="checkbox" data-rand-all checked>
+              <span class="small">All moves (no filter)</span>
+            </div>
+          </label>
+
+          <div class="row" style="flex-wrap:wrap;gap:12px;margin-top:6px">
+            <label class="small"><input type="checkbox" data-rand-group value="upper"> Upper Body</label>
+            <label class="small"><input type="checkbox" data-rand-group value="lower"> Lower Body</label>
+            <label class="small"><input type="checkbox" data-rand-group value="total"> Total Body</label>
+            <label class="small"><input type="checkbox" data-rand-group value="cardio"> Cardio</label>
+            <label class="small"><input type="checkbox" data-rand-group value="abs"> Abs/Core</label>
+          </div>
+
+          <label>
+            <div class="row" style="gap:10px;align-items:center;margin-top:8px">
+              <input type="checkbox" data-rand-balance checked>
+              <span class="small">Balance selected groups (round-robin)</span>
+            </div>
+          </label>
+
+          <label>
+            <div class="row" style="gap:10px;align-items:center;margin-top:8px">
+              <input type="checkbox" data-rand-match-all>
+              <span class="small">Require ALL selected groups (strict)</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn btn-ghost" data-render-slots>Update slots</button>
+          <button class="btn btn-ghost" data-randomize>Randomize moves</button>
+          <button class="btn" data-generate>Generate preview</button>
+        </div>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn" data-save>Save to My Workouts</button>
+          <button class="btn btn-ghost" data-start-now>Save & Start</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="title">Move Slots</div>
+        <div class="small muted">Pick moves for each stage (or randomize).</div>
+        <div data-slots style="margin-top:12px"></div>
+      </section>
+
+      <section class="card">
+        <div class="title">Preview</div>
+        <div data-preview class="small muted">Generate a preview to see total time and segment list.</div>
+
+        <div class="divider"></div>
+
+        <div class="title">Export</div>
+        <textarea class="input" rows="10" data-export placeholder="Generate a preview to export JSON…"></textarea>
+
+        <div class="divider"></div>
+
+        <div class="title">Import</div>
+        <textarea class="input" rows="8" data-import placeholder="Paste workout JSON here…"></textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-ghost" data-import-btn>Import into My Workouts</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container small muted">CP20 • Local prototype • Builder saves to localStorage.</div>
+  </footer>
+
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

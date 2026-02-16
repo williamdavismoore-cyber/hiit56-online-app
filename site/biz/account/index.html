@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Account — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="biz-account">
+
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online">
+      </a>
+      <div class="nav">
+        <a href="/biz/">Business</a>
+        <a href="/biz/gym-timer/">Gym Timer</a>
+        <a href="/biz/moves/">Move Library</a>
+        <a href="/biz/onboarding/">Onboarding</a>
+        <a href="/biz/account/" class="primary">Account</a>
+        <a href="/app/" title="Member side">Member</a>
+        <a href="/login.html" title="Switch role">Role</a>
+        <span class="badge" data-role-pill>Guest</span>
+        <span class="badge" data-tenant-pill style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="section-title">
+    <h2>Business Account</h2>
+    <div class="small">Tenant: <span class="badge" data-account-tenant>—</span></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Identity</div>
+        <p class="small">Email: <span class="badge" data-account-email>—</span></p>
+        <p class="small">Role: <span class="badge" data-account-role>—</span></p>
+        <p class="small">Plan: <span class="badge" id="bizPlan">Demo</span></p>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Coupon</div>
+        <p class="small">Current: <span class="badge" data-coupon-current>None</span></p>
+        <div class="toolbar" style="margin:10px 0 0 0">
+          <input class="input" placeholder="CODE" data-coupon-input>
+          <button class="btn" data-coupon-apply>Apply</button>
+          <button class="btn" data-coupon-clear>Clear</button>
+        </div>
+        <p class="small" data-coupon-note></p>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Billing</div>
+        <p class="small" data-billing-status>Not linked yet.</p>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn primary" data-billing-manage>Manage Billing</button>
+          <button class="btn" data-billing-clear>Clear link</button>
+        </div>
+        <p class="small">Note: Billing portal works on the deployed Netlify build (Functions), not the local static QA preview.</p>
+      </div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Comp status</div>
+        <p class="small" data-comp-status>—</p>
+        <p class="small">Master Admin can grant business comps in <a href="/admin/comps/">Admin → Comps</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row" style="margin-top:14px">
+    <a class="btn" href="/biz/gym-timer/">Gym Timer</a>
+    <a class="btn" href="/biz/moves/">Move Library</a>
+    <a class="btn" href="/biz/onboarding/">Onboarding</a>
+    <button class="btn primary" data-account-signout>Sign out</button>
+  </div>
+</div>
+
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <div class="title" data-modal-title>Video</div>
+        <button class="modal-close" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body" data-modal-body></div>
+    </div>
+  </div>
+
+
+  <div class="footer">
+    <div class="container">
+      <div>HIIT56 Online — build preview (CP26). Business Account scaffold added.</div>
+    </div>
+  </div>
+
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', ()=> navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+    }
+  </script>
+
+  <script src="/assets/js/site.js" defer></script>
+  <script>
+    const slug = localStorage.getItem('hiit56_tenant_slug') || '';
+    const plan = localStorage.getItem('hiit56_biz_plan_demo_' + slug) || 'monthly';
+    const el = document.getElementById('bizPlan');
+    if(el) el.textContent = (plan === 'annual' ? 'Annual' : 'Monthly') + ' (demo)';
+  </script>
+</body>
+</html>

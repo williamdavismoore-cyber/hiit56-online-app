@@ -1,0 +1,42 @@
+{
+  "mode": "test",
+  "stripe_publishable_key": "pk_test_51SyCOfLuJBXNyJuKqGk00mf800dSkNYNXd7VETau6ud9fgdDesKEOPj0absTGmDTKEYqp64YYGA8DJM3jTaWDJUK00hEP1BmA4",
+  "portal_configuration_id": "bpc_1Syhh0LuJBXNyJuKlfodpUJp",
+  "webhook_destination_id": "we_1SyhvGLuJBXNyJuKcaIuzF42",
+  "stripe_api_version": "2026-01-28.clover",
+  "products": {
+    "member": {
+      "product_id": "prod_TwWJwYY76fkVFo",
+      "prices": {
+        "monthly": "price_1SydGhLuJBXNyJuKSEXZYxYr",
+        "annual": "price_1SydJ5LuJBXNyJuKDybmOTYv"
+      }
+    },
+    "business": {
+      "billing_unit": "per_location",
+      "tiers": {
+        "starter": {
+          "product_id": "prod_TwtJ8gIGEync96",
+          "prices": {
+            "monthly": null,
+            "annual": null
+          }
+        },
+        "pro": {
+          "product_id": "prod_TwWKZ6q9JYkINH",
+          "prices": {
+            "monthly": "price_1SydHkLuJBXNyJuKs9GnEYSd",
+            "annual": "price_1SyhXPLuJBXNyJuK9vdqeAaw"
+          }
+        }
+      }
+    }
+  },
+  "endpoints": {
+    "create_checkout_session": "/api/stripe/create-checkout-session",
+    "create_portal_session": "/api/stripe/create-portal-session",
+    "webhook": "/api/stripe/webhook",
+    "health": "/api/health"
+  },
+  "notes": "Public test-mode config (safe fields only). Secrets must be set as Netlify env vars. Business Starter price IDs are placeholders until provided."
+}
