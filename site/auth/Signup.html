@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account — HIIT56</title>
+  <link rel="icon" href="/assets/branding/Hiit56_Favicon_32x32.webp">
+  <link rel="apple-touch-icon" href="/assets/branding/Hiit56_Favicon_180x180.webp">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body data-page="auth-signup">
+  <div class="header">
+    <div class="header-inner">
+      <a class="logo" href="/"><img src="/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png" alt="HIIT56 Online"></a>
+      <div class="nav">
+        <a href="/workouts/">Workouts</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/for-gyms/">For Gyms</a>
+        <a href="/join.html">Join</a>
+        <a href="/auth/login.html" class="primary">Log in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">
+      <h2>Create account</h2>
+      <div class="small">Supabase account signup</div>
+    </div>
+
+    <div class="card" style="min-height:auto">
+      <div class="meta">
+        <div class="title">Email</div>
+        <input class="input" type="email" placeholder="you@example.com" data-auth-email>
+        <div class="title" style="margin-top:12px">Password</div>
+        <input class="input" type="password" placeholder="••••••••" data-auth-pass>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn primary" data-auth-signup>Create account</button>
+          <a class="btn" href="/auth/login.html">Back to login</a>
+        </div>
+        <div class="small" style="margin-top:10px" data-auth-msg></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/vendor/supabase/supabase.js"></script>
+  <script>
+    async function loadSupabaseCfg(){
+      const r = await fetch('/assets/data/supabase_public_test.json', {cache:'no-store'});
+      if(!r.ok) throw new Error('Missing supabase_public_test.json');
+      return await r.json();
+    }
+
+    (async function(){
+      const emailEl = document.querySelector('[data-auth-email]');
+      const passEl = document.querySelector('[data-auth-pass]');
+      const btn = document.querySelector('[data-auth-signup]');
+      const msg = document.querySelector('[data-auth-msg]');
+
+      const next = new URLSearchParams(location.search).get('next') || '/join.html';
+
+      let supabase;
+      try{
+        const cfg = await loadSupabaseCfg();
+        supabase = window.supabase.createClient(cfg.supabase_url, cfg.supabase_anon_key);
+      }catch(e){
+        msg.textContent = 'Supabase config missing.';
+        return;
+      }
+
+      btn.addEventListener('click', async ()=>{
+        msg.textContent = '';
+        const email = (emailEl.value || '').trim();
+        const password = (passEl.value || '').trim();
+        if(!email || !password){
+          msg.textContent = 'Email + password required.';
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Creating…';
+        try{
+          const { data, error } = await supabase.auth.signUp({ email, password });
+          if(error) throw error;
+
+          msg.textContent = 'Account created. If email confirmation is enabled, check your inbox, then log in.';
+          setTimeout(()=> location.href = `/auth/login.html?next=${encodeURIComponent(next)}`, 1200);
+        }catch(err){
+          msg.textContent = err?.message || 'Signup failed.';
+        }finally{
+          btn.disabled = false;
+          btn.textContent = 'Create account';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

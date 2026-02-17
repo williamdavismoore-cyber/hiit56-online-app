@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hiit56-cp25-static-v1';
+const CACHE_NAME = 'hiit56-cp27-static-v1';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -39,6 +39,8 @@ const CORE_ASSETS = [
   '/admin/comps/',
   '/admin/comps/index.html',
   '/login.html',
+  '/auth/login.html',
+  '/auth/signup.html',
   '/pricing.html',
   '/for-gyms/',
   '/for-gyms/index.html',
