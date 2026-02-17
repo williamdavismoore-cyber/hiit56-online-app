@@ -1179,7 +1179,7 @@ async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_na
     const { data: { session } } = await s.auth.getSession();
     if(!session?.user){
       const next = encodeURIComponent(location.pathname + location.search);
-      location.href = `/login.html?next=${next}`;
+      location.href = `/auth/login.html?next=${next}`;
       return;
     }
 
@@ -1200,7 +1200,7 @@ async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_na
   }catch(e){
     console.warn('Auth required before checkout:', e?.message || e);
     const next = encodeURIComponent(location.pathname + location.search);
-    location.href = `/login.html?next=${next}`;
+    location.href = `/auth/login.html?next=${next}`;
     return;
   }
 
@@ -4515,25 +4515,25 @@ function guardPage(page){
 
   if(page && page.startsWith('biz-')){
     if(!canAccessBiz()){
-      location.href = `/login.html?next=${next}`;
+      location.href = `/auth/login.html?next=${next}`;
       return false;
     }
     if(isBizRole(role) && !getTenant()){
-      location.href = `/login.html?next=${next}`;
+      location.href = `/auth/login.html?next=${next}`;
       return false;
     }
   }
 
   if(page && page.startsWith('admin-')){
     if(!isSuperAdmin(role)){
-      location.href = `/login.html?next=${next}`;
+      location.href = `/auth/login.html?next=${next}`;
       return false;
     }
   }
 
   if(page && page.startsWith('member-')){
     if(!canAccessMember()){
-      location.href = `/login.html?next=${next}`;
+      location.href = `/auth/login.html?next=${next}`;
       return false;
     }
   }
