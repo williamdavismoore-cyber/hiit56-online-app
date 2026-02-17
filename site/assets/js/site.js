@@ -1131,23 +1131,114 @@ function isLocalPreview(){
 async function startStripeCheckout({tier, plan, email, tenant_slug='', tenant_name='', biz_tier='', locations=1}){
   const cfg = await loadStripePublicConfig();
   if(!cfg) throw new Error('Stripe config missing (stripe_public_test.json).');
-  const endpoint = (cfg.endpoints && cfg.endpoints.create_checkout_session) ? cfg.endpoints.create_checkout_session : '/api/stripe/create-checkout-session';
+
+  const endpoint = (cfg.endpoints && cfg.endpoints.create_checkout_session)
+    ? cfg.endpoints.create_checkout_session
+    : '/api/stripe/create-checkout-session';
+
+  // --- Ensure Supabase SDK is available in the browser ---
+  async function ensureSupabaseSDK(){
+    if(window.supabase && window.supabase.createClient) return true;
+
+    // load local SDK file if not present
+    await new Promise((resolve, reject)=>{
+      const existing = document.querySelector('script[data-supabase-sdk]');
+      if(existing) return resolve();
+
+      const s = document.createElement('script');
+      s.src = '/assets/vendor/supabase/supabase.js';
+      s.async = true;
+      s.setAttribute('data-supabase-sdk','1');
+      s.onload = ()=> resolve();
+      s.onerror = ()=> reject(new Error('Failed to load Supabase SDK'));
+      document.head.appendChild(s);
+    });
+
+    return !!(window.supabase && window.supabase.createClient);
+  }
+
+  let subject_id = '';
+  const subject_type = 'user';
+  let userEmail = '';
+
+  // --- Require auth: must have a session to proceed ---
+  try{
+    const ok = await ensureSupabaseSDK();
+    if(!ok) throw new Error('Supabase SDK not available');
+
+    const r = await fetch('/assets/data/supabase_public_test.json', {cache:'no-store'});
+    if(!r.ok) throw new Error('Missing /assets/data/supabase_public_test.json');
+
+    const scfg = await r.json();
+    const sUrl = String(scfg.supabase_url || '').trim();
+    const sKey = String(scfg.supabase_anon_key || '').trim();
+    if(!sUrl || !sKey) throw new Error('Supabase public config invalid');
+
+    const s = window.supabase.createClient(sUrl, sKey);
+
+    const { data: { session } } = await s.auth.getSession();
+    if(!session?.user){
+      const next = encodeURIComponent(location.pathname + location.search);
+      location.href = `/login.html?next=${next}`;
+      return;
+    }
+
+    subject_id = session.user.id;
+    userEmail = session.user.email || '';
+
+    // Best-effort profile upsert
+    try{
+      await s.from('profiles').upsert({
+        user_id: session.user.id,
+        email: session.user.email ?? null,
+        full_name: session.user.user_metadata?.full_name ?? null,
+      }, { onConflict: 'user_id' });
+    }catch(e){
+      console.warn('[ensureProfile] upsert failed:', e?.message || e);
+    }
+
+  }catch(e){
+    console.warn('Auth required before checkout:', e?.message || e);
+    const next = encodeURIComponent(location.pathname + location.search);
+    location.href = `/login.html?next=${next}`;
+    return;
+  }
+
+  if(!subject_id){
+    throw new Error('Missing/invalid subject_id. Please log in and try again.');
+  }
+
+  const finalEmail = String(userEmail || email || '').trim();
 
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({tier, plan, biz_tier, locations, email, tenant_slug, tenant_name})
+    body: JSON.stringify({
+      tier,
+      plan,
+      biz_tier,
+      locations,
+      email: finalEmail,
+      tenant_slug,
+      tenant_name,
+      subject_id,
+      subject_type
+    })
   });
 
+  let data = null;
+  try{ data = await res.json(); }catch(_){ data = null; }
+
   if(!res.ok){
-    const text = await res.text().catch(()=> '');
-    throw new Error('Checkout session failed: ' + text);
+    const msg = (data && data.error) ? data.error : `Checkout session failed (${res.status}).`;
+    throw new Error(msg);
   }
-  const data = await res.json();
+
   if(data && data.url){
     location.href = data.url;
     return true;
   }
+
   throw new Error('No checkout URL returned.');
 }
 
