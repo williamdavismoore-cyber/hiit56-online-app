@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDYRA Biz — Migration</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/ndyra.css" />
+</head>
+<body data-page="ndyra-biz-migrate">
+  <header class="ndyra-topbar">
+    <a class="ndyra-brand" href="/biz/">NDYRA Biz</a>
+    <nav class="ndyra-topnav">
+      <a href="/biz/">Dashboard</a>
+      <a href="/">Public</a>
+    </nav>
+  </header>
+
+  <main class="ndyra-main" style="max-width: 980px; margin: 0 auto; padding: 20px;">
+    <h1 style="margin: 0 0 6px;">Business Portal Migration</h1>
+    <p style="margin: 0 0 16px; opacity: .8;">Import → verify → commit → cutover (system_of_record).</p>
+
+    <section class="card" style="padding: 14px;">
+      <div data-migrate-ui></div>
+    </section>
+  </main>
+
+  <footer class="footer" style="text-align:center; padding: 14px; opacity:.8;">Build Preview</footer>
+
+  <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
+</body>
+</html>

@@ -1,13 +1,61 @@
-name: HIIT56 Checkpoint QA
+name: NDYRA Gates (Audit + RLS + QA)
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
-  pull_request:
 
 jobs:
+  blueprint_guard:
+    name: Blueprint Guard (No drift)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enforce 'Blueprint first' rule
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          echo "Base: $BASE_SHA"
+          echo "Head: $HEAD_SHA"
+          echo ""
+
+          CHANGED="$(git diff --name-status "$BASE_SHA" "$HEAD_SHA")"
+          echo "$CHANGED"
+          echo ""
+
+          NEED_BLUEPRINT=0
+
+          while read -r status file; do
+            # Only care about added NEW tables/routes/patterns. (Edits are handled by human review.)
+            if [ "$status" = "A" ]; then
+              case "$file" in
+                supabase/migrations/*) NEED_BLUEPRINT=1 ;;
+                site/app/*) NEED_BLUEPRINT=1 ;;
+                netlify/functions/*) NEED_BLUEPRINT=1 ;;
+              esac
+            fi
+          done <<< "$CHANGED"
+
+          if [ "$NEED_BLUEPRINT" -eq 1 ]; then
+            echo "Detected new schema/routes/functions. Blueprint must be updated in the same PR."
+            echo "$CHANGED" | grep -q "docs/ndyra/NDYRA_SoupToNuts_Blueprint" || (
+              echo "❌ Blueprint update missing: docs/ndyra/NDYRA_SoupToNuts_Blueprint_*"
+              exit 1
+            )
+            echo "✅ Blueprint updated: OK"
+          else
+            echo "✅ No blueprint-required additions detected."
+          fi
+
   qa:
+    name: QA (Smoke + E2E + Lighthouse)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -47,3 +95,37 @@ jobs:
         with:
           name: lighthouse-artifacts
           path: artifacts/lighthouse
+
+  db_gates:
+    name: DB Gates (Anti-Drift + RLS)
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_DB_URL_STAGING: ${{ secrets.SUPABASE_DB_URL_STAGING }}
+      RLS_TEST_ALICE_UUID: ${{ secrets.RLS_TEST_ALICE_UUID }}
+      RLS_TEST_BOB_UUID: ${{ secrets.RLS_TEST_BOB_UUID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install psql
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Guard: required secrets exist
+        run: |
+          if [ -z "$SUPABASE_DB_URL_STAGING" ]; then
+            echo "Missing GitHub secret: SUPABASE_DB_URL_STAGING"
+            exit 1
+          fi
+          if [ -z "$RLS_TEST_ALICE_UUID" ] || [ -z "$RLS_TEST_BOB_UUID" ]; then
+            echo "Missing GitHub secret(s): RLS_TEST_ALICE_UUID and/or RLS_TEST_BOB_UUID"
+            exit 1
+          fi
+
+      - name: Gate A — Anti-Drift Audit (v7)
+        run: |
+          psql "$SUPABASE_DB_URL_STAGING" -v ON_ERROR_STOP=1 -f supabase/gates/NDYRA_CP27_AntiDrift_Audit_v7.sql
+
+      - name: Gate B — RLS Tests (v7, rollback)
+        run: |
+          psql "$SUPABASE_DB_URL_STAGING" -v ON_ERROR_STOP=1             -c "set ndyra.alice_uuid='${RLS_TEST_ALICE_UUID}';"             -c "set ndyra.bob_uuid='${RLS_TEST_BOB_UUID}';"             -f supabase/gates/NDYRA_CP27_RLS_Tests_v7.sql

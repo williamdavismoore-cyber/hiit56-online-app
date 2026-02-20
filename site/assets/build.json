@@ -1,13 +1,11 @@
 {
-  "cp": 26,
-  "label": "CP26",
-  "build_id": "2026-02-12_26",
-  "kit_version": "v2.8",
-  "base": "CP25 v2.7",
-  "build_date_iso": "2026-02-12T00:00:00-05:00",
+  "cp": 27,
+  "label": "CP27",
+  "build_id": "2026-02-18_27",
+  "kit_version": "v2.9",
+  "base": "CP26 v2.8",
+  "build_date_iso": "2026-02-18T02:11:42.940652+00:00",
   "notes": [
-    "CP26: Automated QA harness (Playwright + Lighthouse CI) + telemetry ingest + Vimeo domain allowlist verification",
-    "Bug fix: prevent build label initialization TDZ issue in site.js",
-    "Timer stability smoke coverage (skip-to-rest e2e) and performance budgets"
+    "CP27: law + gates alignment + checkpoint label + NDYRA brand sync."
   ]
 }

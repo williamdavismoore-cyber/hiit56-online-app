@@ -1,0 +1,109 @@
+{
+  "posts": [
+    {
+      "id": "demo-post-001",
+      "created_at": "2026-02-18T12:00:00Z",
+      "visibility": "public",
+      "content_text": "First light of NDYRA. \ud83d\udd25 Building in public, shipping in silence.",
+      "author_user_id": "demo-user-001",
+      "author_tenant_id": null,
+      "tenant_context_id": null,
+      "post_media": [
+        {
+          "id": "demo-media-001",
+          "media_type": "image",
+          "storage_path": null,
+          "public_url": "/assets/branding/app-icon-1024.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "post_stats": [
+        {
+          "post_id": "demo-post-001",
+          "reactions_fire": 12,
+          "reactions_flex": 7,
+          "reactions_heart": 5,
+          "reactions_clap": 3,
+          "reactions_check": 2,
+          "comments_count": 4
+        }
+      ]
+    },
+    {
+      "id": "demo-post-002",
+      "created_at": "2026-02-18T13:15:00Z",
+      "visibility": "public",
+      "content_text": "Day 1 rule: gates first. No drift, no mystery regressions.",
+      "author_user_id": "demo-user-002",
+      "author_tenant_id": null,
+      "tenant_context_id": null,
+      "post_media": [
+        {
+          "id": "demo-media-002",
+          "media_type": "image",
+          "storage_path": null,
+          "public_url": "/assets/branding/app-icon-512.png",
+          "width": 512,
+          "height": 512
+        }
+      ],
+      "post_stats": [
+        {
+          "post_id": "demo-post-002",
+          "reactions_fire": 4,
+          "reactions_flex": 9,
+          "reactions_heart": 1,
+          "reactions_clap": 2,
+          "reactions_check": 6,
+          "comments_count": 1
+        }
+      ]
+    },
+    {
+      "id": "demo-post-003",
+      "created_at": "2026-02-18T15:45:00Z",
+      "visibility": "public",
+      "content_text": "Your feed is going to feel like a mission-control console\u2014clean, fast, and addictive.",
+      "author_user_id": "demo-user-001",
+      "author_tenant_id": null,
+      "tenant_context_id": null,
+      "post_media": [
+        {
+          "id": "demo-media-003",
+          "media_type": "image",
+          "storage_path": null,
+          "public_url": "/assets/branding/app-icon-192.png",
+          "width": 192,
+          "height": 192
+        }
+      ],
+      "post_stats": [
+        {
+          "post_id": "demo-post-003",
+          "reactions_fire": 1,
+          "reactions_flex": 2,
+          "reactions_heart": 8,
+          "reactions_clap": 3,
+          "reactions_check": 0,
+          "comments_count": 0
+        }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "user_id": "demo-user-001",
+      "handle": "aelric",
+      "full_name": "Aelric Forge",
+      "avatar_url": "/assets/branding/app-icon-192.png"
+    },
+    {
+      "user_id": "demo-user-002",
+      "handle": "william",
+      "full_name": "William",
+      "avatar_url": "/assets/branding/app-icon-192.png"
+    }
+  ],
+  "tenants": []
+}

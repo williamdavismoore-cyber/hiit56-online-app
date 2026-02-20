@@ -1,4 +1,4 @@
-"""HIIT56 static site QA smoke tests (CP26).
+"""NDYRA static site QA smoke tests (auto-labeled from build.json).
 
 Run:
   python tools/qa_smoke.py
@@ -37,7 +37,15 @@ def assert_(cond: bool, msg: str) -> None:
 
 
 def main() -> int:
-    print("HIIT56 QA SMOKE — CP26")
+    # Auto-label from build.json (no stale checkpoint strings).
+    build_path = SITE / "assets" / "build.json"
+    label = "CP??"
+    try:
+        data = json.loads(build_path.read_text(encoding="utf-8"))
+        label = data.get("label") or f"CP{data.get('cp')}"
+    except Exception:
+        pass
+    print(f"NDYRA QA SMOKE — {label}")
     print(f"Root: {ROOT}")
     print(f"Site: {SITE}")
 

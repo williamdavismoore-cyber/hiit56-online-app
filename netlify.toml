@@ -1,7 +1,10 @@
 [build]
   publish = "site"
-  functions = "netlify/functions"
   command = "npm run build"
 
-[functions]
-  node_bundler = "esbuild"
+# Optional: ensure consistent Node runtime on Netlify.
+# If your project already specifies NODE_VERSION elsewhere, you can remove this.
+[build.environment]
+  NODE_VERSION = "20"
+
+# Pretty URLs + dynamic route rewrites are handled by site/_redirects.

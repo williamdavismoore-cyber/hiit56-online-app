@@ -1,106 +1,118 @@
-#!/usr/bin/env node
 /**
- * Tiny static server for Playwright E2E.
- * Why: avoids SPA-rewrite quirks and guarantees querystrings don't affect file resolution.
+ * NDYRA Static QA Server (no framework)
+ *
+ * Why this exists:
+ * - Local QA + Playwright need deterministic routing for "pretty" URLs
+ * - Must serve ES modules with correct MIME types (.mjs)
+ * - Must NOT introduce a routing framework (Blueprint rule)
  *
  * Usage:
- *   node tools/static_server.cjs --root site --port 4174
+ *   node tools/static_server.cjs --root site --port 4173
  */
+
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { URL } = require('url');
+const url = require('url');
 
-function arg(name, fallback=null){
-  const idx = process.argv.indexOf(`--${name}`);
-  if(idx === -1) return fallback;
-  const val = process.argv[idx+1];
-  if(!val || val.startsWith('--')) return fallback;
-  return val;
+function getArg(name, fallback) {
+  const idx = process.argv.indexOf(name);
+  if (idx === -1) return fallback;
+  const v = process.argv[idx + 1];
+  return v ?? fallback;
 }
 
-const ROOT = path.resolve(arg('root', 'site'));
-const PORT = Number(arg('port', process.env.PW_PORT || 4174));
+const root = getArg('--root', 'site');
+const port = Number(getArg('--port', '4174'));
 
-const MIME = {
+const CONTENT_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
-  '.gif': 'image/gif',
   '.ico': 'image/x-icon',
-  '.webmanifest': 'application/manifest+json; charset=utf-8',
-  '.txt': 'text/plain; charset=utf-8',
-  '.map': 'application/json; charset=utf-8',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.mp4': 'video/mp4',
   '.webm': 'video/webm',
+  '.txt': 'text/plain; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
 };
 
-function contentType(filePath){
-  const ext = path.extname(filePath).toLowerCase();
-  return MIME[ext] || 'application/octet-stream';
-}
+/**
+ * Pretty-URL route rewrites (Blueprint v7.3.1)
+ *
+ * IMPORTANT:
+ * - These are ONLY rewrites to existing static HTML files.
+ * - If the target file doesn't exist in the current build, rewrite is skipped.
+ */
+const routeMap = [
+  // Existing
+  { re: /^\/app\/post\/[0-9a-fA-F-]{36}\/?$/, file: '/app/post/index.html' },
 
-function safeJoin(root, rel){
-  const joined = path.join(root, rel);
-  const normRoot = root.endsWith(path.sep) ? root : root + path.sep;
-  if(!joined.startsWith(normRoot)) return null;
-  return joined;
+  // Blueprint v7.3.1 (safe-guarded by existence checks)
+  { re: /^\/app\/book\/class\/[0-9a-fA-F-]{36}\/?$/, file: '/app/book/class/index.html' },
+  { re: /^\/gym\/[a-z0-9-]+\/join\/?$/i, file: '/gym/join/index.html' },
+];
+
+function existsUnderRoot(file) {
+  try {
+    fs.accessSync(path.join(root, file));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const server = http.createServer((req, res) => {
-  try{
-    const u = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    let pathname = decodeURIComponent(u.pathname || '/');
+  const parsed = url.parse(req.url);
+  let pathname = decodeURIComponent(parsed.pathname || '/');
 
-    // Normalize directory -> index.html
-    if(pathname.endsWith('/')) pathname += 'index.html';
+  // Rewrite dynamic/pretty routes to their static entrypoints
+  for (const r of routeMap) {
+    if (r.re.test(pathname) && existsUnderRoot(r.file)) {
+      pathname = r.file;
+      break;
+    }
+  }
 
-    // Default to root index
-    if(pathname === '') pathname = '/index.html';
+  // Normalize directory/extension-less paths to /index.html
+  if (pathname.endsWith('/')) pathname += 'index.html';
+  if (!path.extname(pathname)) pathname = pathname.replace(/\/$/, '') + '/index.html';
 
-    const rel = pathname.replace(/^\/+/, '');
-    const filePath = safeJoin(ROOT, rel);
+  const absPath = path.join(root, pathname);
 
-    // No traversal
-    if(!filePath){
-      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('Forbidden');
+  fs.readFile(absPath, (err, data) => {
+    if (err) {
+      res.writeHead(404, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+      });
+      res.end('404 Not Found');
       return;
     }
 
-    fs.stat(filePath, (err, st) => {
-      if(err || !st.isFile()){
-        res.writeHead(404, {
-          'Content-Type': 'text/plain; charset=utf-8',
-          // Prevent caching during E2E
-          'Cache-Control': 'no-store'
-        });
-        res.end('Not Found');
-        return;
-      }
+    const ext = path.extname(absPath).toLowerCase();
+    const ct = CONTENT_TYPES[ext] || 'application/octet-stream';
 
-      // Stream file
-      res.writeHead(200, {
-        'Content-Type': contentType(filePath),
-        'Cache-Control': 'no-store',
-      });
-      fs.createReadStream(filePath).pipe(res);
+    res.writeHead(200, {
+      'Content-Type': ct,
+      // Prevent weird caching issues during QA.
+      'Cache-Control': 'no-store',
     });
-  }catch(e){
-    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
-    res.end('Server error');
-  }
+    res.end(data);
+  });
 });
 
-server.listen(PORT, () => {
-  console.log(`E2E static server: ${ROOT}`);
-  console.log(`Listening on http://localhost:${PORT}`);
+server.listen(port, '0.0.0.0', () => {
+  // Print both localhost + LAN hints
+  console.log(`Serving ${root} at:`);
+  console.log(`  http://localhost:${port}/`);
+  console.log(`  http://127.0.0.1:${port}/`);
 });

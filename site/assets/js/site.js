@@ -1054,10 +1054,10 @@ async function loadJSON(path){
 }
 
 // =========================
-// Build info + cache-busting (CP26)
+// Build info + cache-busting (CP28)
 // =========================
-const HIIT56_BUILD_ID = '2026-02-16_27';
-const HIIT56_BUILD_LABEL = 'CP27';
+const HIIT56_BUILD_ID = '2026-02-18_28';
+const HIIT56_BUILD_LABEL = 'CP28';
 let HIIT56_BUILD = { label: HIIT56_BUILD_LABEL, build_id: HIIT56_BUILD_ID };
 
 function withCacheBust(url){

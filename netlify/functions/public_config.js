@@ -7,12 +7,24 @@
 // - Never return service-role keys.
 
 exports.handler = async () => {
-  const supabase_url = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
-  const supabase_anon_key = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
+  const supabaseUrl =
+    process.env.VITE_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    '';
 
+  const supabaseAnonKey =
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    '';
+
+  // Return BOTH camelCase and snake_case keys for backward compatibility.
+  // The frontend prefers camelCase.
   const payload = {
-    supabase_url,
-    supabase_anon_key,
+    supabaseUrl,
+    supabaseAnonKey,
+    supabase_url: supabaseUrl,
+    supabase_anon_key: supabaseAnonKey,
   };
 
   return {
@@ -20,8 +32,6 @@ exports.handler = async () => {
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-store',
-      // If you ever want to request this from a different origin,
-      // you can loosen this later. For now, keep it same-origin only.
       'Access-Control-Allow-Origin': '*',
     },
     body: JSON.stringify(payload),
