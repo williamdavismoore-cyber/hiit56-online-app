@@ -1,5 +1,5 @@
 -- =========================================================
--- NDYRA CP27 — RLS Regression Tests (v7)
+-- NDYRA CP27 — RLS Regression Tests (v7) — FIXED
 -- =========================================================
 -- PURPOSE:
 -- Hard-fail if any of these become true:
@@ -13,18 +13,20 @@
 --    - ALICE (author)
 --    - BOB (viewer)
 -- 2) Copy their auth.users UUIDs into the variables below.
--- 3) Run this script in Supabase SQL editor.
+-- 3) Paste this whole script into Supabase SQL editor and Run.
 --
 -- NOTES:
--- - This uses set_config('request.jwt.claim.sub', ...) to simulate auth.uid().
--- - Run on STAGING (recommended) before merging any DB/RLS changes.
+-- - Uses set_config('request.jwt.claim.sub', ...) to simulate auth.uid().
+-- - Wrapped in BEGIN/ROLLBACK so it leaves no residue.
 -- =========================================================
+
+begin;
 
 do $$
 declare
   -- >>> REPLACE THESE UUIDS <<<
-  alice uuid := '00000000-0000-0000-0000-000000000001';
-  bob   uuid := '00000000-0000-0000-0000-000000000002';
+  alice uuid := '9b244176-da0e-4ed7-8140-87dcd313e4a6'::uuid;
+  bob   uuid := 'c3ee9c73-ba52-430c-9e55-3762d230a9a8'::uuid;
 
   post_public uuid;
   post_private uuid;
@@ -59,7 +61,7 @@ begin
   values (auth.uid(), 'followers', 'RLS_TEST: Alice followers')
   returning id into post_followers;
 
-  -- Add media + stats rows (stats auto created by trigger, media manual)
+  -- Add media rows (stats auto created by trigger, media manual)
   insert into public.post_media(post_id, media_type, storage_path, width, height)
   values (post_private, 'image', 'u/'||alice::text||'/'||gen_random_uuid()||'.jpg', 1080, 1350);
 
@@ -151,3 +153,5 @@ begin
   raise notice 'RLS TESTS PASS (v7): no private leaks, follower gating works, blocks enforced.';
 
 end $$;
+
+rollback;
