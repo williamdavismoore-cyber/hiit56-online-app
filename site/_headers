@@ -1,4 +1,10 @@
-# HIIT56 Netlify headers — CP25 baseline hardening (Report-Only CSP to avoid breaking previews)
+# NDYRA Netlify headers — baseline hardening (Report-Only CSP to avoid breaking previews)
+
+/sw.js
+  Cache-Control: no-store
+
+/assets/build.json
+  Cache-Control: no-store
 
 /*
   X-Content-Type-Options: nosniff

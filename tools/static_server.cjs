@@ -1,98 +1,118 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
+/**
+ * NDYRA Static QA Server (no framework)
+ *
+ * Why this exists:
+ * - Local QA + Playwright need deterministic routing for "pretty" URLs
+ * - Must serve ES modules with correct MIME types (.mjs)
+ * - Must NOT introduce a routing framework (Blueprint rule)
+ *
+ * Usage:
+ *   node tools/static_server.cjs --root site --port 4173
+ */
 
-const PORT = 4173;
-const ROOT = path.join(__dirname, "..", "site");
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const url = require('url');
 
-const MIME = {
-  ".html": "text/html",
-  ".js": "application/javascript",
-  ".mjs": "application/javascript",
-  ".css": "text/css",
-  ".json": "application/json",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".svg": "image/svg+xml",
-  ".ico": "image/x-icon",
-  ".webp": "image/webp",
-  ".woff2": "font/woff2"
+function getArg(name, fallback) {
+  const idx = process.argv.indexOf(name);
+  if (idx === -1) return fallback;
+  const v = process.argv[idx + 1];
+  return v ?? fallback;
+}
+
+const root = getArg('--root', 'site');
+const port = Number(getArg('--port', '4174'));
+
+const CONTENT_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.txt': 'text/plain; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
 };
 
-function resolveRoute(urlPath) {
-  // Remove query string
-  urlPath = urlPath.split("?")[0];
+/**
+ * Pretty-URL route rewrites (Blueprint v7.3.1)
+ *
+ * IMPORTANT:
+ * - These are ONLY rewrites to existing static HTML files.
+ * - If the target file doesn't exist in the current build, rewrite is skipped.
+ */
+const routeMap = [
+  // Existing
+  { re: /^\/app\/post\/[0-9a-fA-F-]{36}\/?$/, file: '/app/post/index.html' },
 
-  // Root
-  if (urlPath === "/") return "/index.html";
+  // Blueprint v7.3.1 (safe-guarded by existence checks)
+  { re: /^\/app\/book\/class\/[0-9a-fA-F-]{36}\/?$/, file: '/app/book/class/index.html' },
+  { re: /^\/gym\/[a-z0-9-]+\/join\/?$/i, file: '/gym/join/index.html' },
+];
 
-  // Gym Join
-  if (/^\/gym\/[^/]+\/join$/.test(urlPath)) {
-    return "/gym/join/index.html";
+function existsUnderRoot(file) {
+  try {
+    fs.accessSync(path.join(root, file));
+    return true;
+  } catch {
+    return false;
   }
-
-  // Booking
-  if (/^\/app\/book\/class\/[^/]+$/.test(urlPath)) {
-    return "/app/book/class/index.html";
-  }
-
-  // Biz migrate routes
-  if (urlPath.startsWith("/biz/migrate/members")) {
-    return "/biz/migrate/members/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/migrate/schedule")) {
-    return "/biz/migrate/schedule/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/migrate/verify")) {
-    return "/biz/migrate/verify/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/migrate/commit")) {
-    return "/biz/migrate/commit/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/migrate/cutover")) {
-    return "/biz/migrate/cutover/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/migrate")) {
-    return "/biz/migrate/index.html";
-  }
-
-  if (urlPath.startsWith("/biz/check-in")) {
-    return "/biz/check-in/index.html";
-  }
-
-  // If exact file exists, serve it
-  return urlPath;
 }
 
 const server = http.createServer((req, res) => {
-  let filePath = resolveRoute(req.url);
-  filePath = path.join(ROOT, filePath);
+  const parsed = url.parse(req.url);
+  let pathname = decodeURIComponent(parsed.pathname || '/');
 
-  // If directory, serve index.html
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-    filePath = path.join(filePath, "index.html");
+  // Rewrite dynamic/pretty routes to their static entrypoints
+  for (const r of routeMap) {
+    if (r.re.test(pathname) && existsUnderRoot(r.file)) {
+      pathname = r.file;
+      break;
+    }
   }
 
-  if (!fs.existsSync(filePath)) {
-    res.writeHead(404);
-    res.end("Not found");
-    return;
-  }
+  // Normalize directory/extension-less paths to /index.html
+  if (pathname.endsWith('/')) pathname += 'index.html';
+  if (!path.extname(pathname)) pathname = pathname.replace(/\/$/, '') + '/index.html';
 
-  const ext = path.extname(filePath);
-  const type = MIME[ext] || "application/octet-stream";
+  const absPath = path.join(root, pathname);
 
-  res.writeHead(200, { "Content-Type": type });
-  fs.createReadStream(filePath).pipe(res);
+  fs.readFile(absPath, (err, data) => {
+    if (err) {
+      res.writeHead(404, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+      });
+      res.end('404 Not Found');
+      return;
+    }
+
+    const ext = path.extname(absPath).toLowerCase();
+    const ct = CONTENT_TYPES[ext] || 'application/octet-stream';
+
+    res.writeHead(200, {
+      'Content-Type': ct,
+      // Prevent weird caching issues during QA.
+      'Cache-Control': 'no-store',
+    });
+    res.end(data);
+  });
 });
 
-server.listen(PORT, () => {
-  console.log(`NDYRA local server running at http://localhost:${PORT}`);
-  console.log(`Serving from: ${ROOT}`);
+server.listen(port, '0.0.0.0', () => {
+  // Print both localhost + LAN hints
+  console.log(`Serving ${root} at:`);
+  console.log(`  http://localhost:${port}/`);
+  console.log(`  http://127.0.0.1:${port}/`);
 });
