@@ -1,4 +1,6 @@
 # NDYRA CP27 Build Order Manifest (v7)
+Blueprint Source of Truth (LOCKED): `NDYRA_SoupToNuts_Blueprint_v7.3.1_LOCKED_CORRECTED.pdf`
+
 
 Owner: William Davis Moore  
 Lead Dev: Aelric Architect  
