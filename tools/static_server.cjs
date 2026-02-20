@@ -61,12 +61,25 @@ const server = http.createServer((req, res) => {
     const u = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     let pathname = decodeURIComponent(u.pathname || '/');
 
-  // Netlify-style dynamic route support for local/static server
-  // /app/post/:id -> /app/post/index.html (URL remains /app/post/:id)
-  const postMatch = pathname.match(/^\/app\/post\/([^\/]+)\/?$/);
-  if (postMatch && postMatch[1] && postMatch[1] !== 'index.html') {
-    pathname = '/app/post/index.html';
-  }
+    // Netlify-style dynamic route support for local/static server
+
+    // /app/post/:id -> /app/post/index.html (URL remains /app/post/:id)
+    const postMatch = pathname.match(/^\/app\/post\/([^\/]+)\/?$/);
+    if (postMatch && postMatch[1] && postMatch[1] !== 'index.html') {
+      pathname = '/app/post/index.html';
+    }
+
+    // /gym/:slug/join -> /gym/join/index.html
+    const gymJoinMatch = pathname.match(/^\/gym\/([^\/]+)\/join\/?$/);
+    if (gymJoinMatch && gymJoinMatch[1]) {
+      pathname = '/gym/join/index.html';
+    }
+
+    // /app/book/class/:class_session_id -> /app/book/class/index.html
+    const bookClassMatch = pathname.match(/^\/app\/book\/class\/([^\/]+)\/?$/);
+    if (bookClassMatch && bookClassMatch[1] && bookClassMatch[1] !== 'index.html') {
+      pathname = '/app/book/class/index.html';
+    }
 
     // Normalize directory -> index.html
     if(pathname.endsWith('/')) pathname += 'index.html';

@@ -28,12 +28,23 @@ async function boot(){
 
   const page = document.body?.dataset?.page || '';
   const map = {
+    // Member app
     'ndyra-fyp': './pages/fyp.mjs',
     'ndyra-following': './pages/following.mjs',
     'ndyra-create': './pages/create.mjs',
     'ndyra-notifications': './pages/notifications.mjs',
     'ndyra-profile': './pages/profile.mjs',
     'ndyra-post': './pages/post.mjs',
+
+    // Public flows
+    'ndyra-gym-join': './pages/gymJoin.mjs',
+
+    // Booking
+    'ndyra-book-class': './pages/bookClass.mjs',
+
+    // Business portal
+    'ndyra-biz-migrate': './pages/bizMigrate.mjs',
+    'ndyra-biz-checkin': './pages/bizCheckin.mjs',
   };
 
   const modPath = map[page];

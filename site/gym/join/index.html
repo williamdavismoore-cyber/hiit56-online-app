@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDYRA — Quick Join</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/ndyra.css" />
+</head>
+<body data-page="ndyra-gym-join">
+  <header class="ndyra-topbar">
+    <a class="ndyra-brand" href="/">NDYRA</a>
+    <nav class="ndyra-topnav">
+      <a href="/app/fyp/?src=demo">App</a>
+      <a href="/biz/">Biz</a>
+    </nav>
+  </header>
+
+  <main class="ndyra-main" style="max-width: 980px; margin: 0 auto; padding: 20px;">
+    <h1 style="margin: 0 0 6px;">Quick Join</h1>
+    <p style="margin: 0 0 16px; opacity: .8;">Public flow: account → waiver → payment (if required) → confirmation.</p>
+
+    <section class="card" style="padding: 14px;">
+      <div style="display:flex; gap: 10px; align-items: baseline; flex-wrap: wrap;">
+        <strong>Gym slug:</strong>
+        <span data-gym-slug style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;"></span>
+      </div>
+      <div style="margin-top: 10px; opacity: .8;">
+        This page is scaffolded. The full join flow is implemented per Blueprint v7.3.1.
+      </div>
+
+      <ol style="margin: 14px 0 0; padding-left: 18px; line-height: 1.6;">
+        <li>Account</li>
+        <li>Waiver (signature upload + RPC sign_current_waiver)</li>
+        <li>Payment (Stripe) if required</li>
+        <li>Confirmation</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="footer" style="text-align:center; padding: 14px; opacity:.8;">Build Preview</footer>
+
+  <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
+</body>
+</html>

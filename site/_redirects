@@ -1,12 +1,4 @@
-# --- API -> Netlify Functions (same-origin) ---
-/api/health                    /.netlify/functions/health                     200
-/api/telemetry                 /.netlify/functions/telemetry_ingest           200
-/api/public-config             /.netlify/functions/public_config              200
-
-# Stripe endpoints
-/api/stripe/create-checkout-session  /.netlify/functions/stripe_create_checkout_session  200
-/api/stripe/create-portal-session    /.netlify/functions/stripe_create_portal_session    200
-/api/stripe/webhook                  /.netlify/functions/stripe_webhook                  200
-
-# NDYRA dynamic routes
-/app/post/* /app/post/index.html 200
+/app/post/*           /app/post/index.html        200
+/gym/*/join           /gym/join/index.html        200
+/app/book/class/*     /app/book/class/index.html  200
+/*                    /index.html                 200

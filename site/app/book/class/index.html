@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDYRA — Book Class</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/ndyra.css" />
+</head>
+<body data-page="ndyra-book-class">
+  <header class="ndyra-topbar">
+    <a class="ndyra-brand" href="/">NDYRA</a>
+    <nav class="ndyra-topnav">
+      <a href="/app/fyp/?src=demo">App</a>
+      <a href="/biz/">Biz</a>
+    </nav>
+  </header>
+
+  <main class="ndyra-main" style="max-width: 980px; margin: 0 auto; padding: 20px;">
+    <h1 style="margin: 0 0 6px;">Book Class</h1>
+    <p style="margin: 0 0 16px; opacity: .8;">Smart Booking Fork (membership vs tokens) is enforced server-side.</p>
+
+    <section class="card" style="padding: 14px;">
+      <div style="display:flex; gap: 10px; align-items: baseline; flex-wrap: wrap;">
+        <strong>class_session_id:</strong>
+        <span data-class-session-id style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;"></span>
+      </div>
+      <div style="margin-top: 10px; opacity: .8;">
+        This page is scaffolded. The canonical token booking RPC is <code>book_class_with_tokens(p_class_session_id uuid)</code>.
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" style="text-align:center; padding: 14px; opacity:.8;">Build Preview</footer>
+
+  <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
+</body>
+</html>
