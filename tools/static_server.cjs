@@ -1,127 +1,98 @@
-#!/usr/bin/env node
-/**
- * Tiny static server for Playwright E2E.
- * Why: avoids SPA-rewrite quirks and guarantees querystrings don't affect file resolution.
- *
- * Usage:
- *   node tools/static_server.cjs --root site --port 4174
- */
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const { URL } = require('url');
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
-function arg(name, fallback=null){
-  const idx = process.argv.indexOf(`--${name}`);
-  if(idx === -1) return fallback;
-  const val = process.argv[idx+1];
-  if(!val || val.startsWith('--')) return fallback;
-  return val;
-}
-
-const ROOT = path.resolve(arg('root', 'site'));
-const PORT = Number(arg('port', process.env.PW_PORT || 4174));
+const PORT = 4173;
+const ROOT = path.join(__dirname, "..", "site");
 
 const MIME = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.mjs': 'application/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.gif': 'image/gif',
-  '.ico': 'image/x-icon',
-  '.webmanifest': 'application/manifest+json; charset=utf-8',
-  '.txt': 'text/plain; charset=utf-8',
-  '.map': 'application/json; charset=utf-8',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.mp4': 'video/mp4',
-  '.webm': 'video/webm',
+  ".html": "text/html",
+  ".js": "application/javascript",
+  ".mjs": "application/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2"
 };
 
-function contentType(filePath){
-  const ext = path.extname(filePath).toLowerCase();
-  return MIME[ext] || 'application/octet-stream';
-}
+function resolveRoute(urlPath) {
+  // Remove query string
+  urlPath = urlPath.split("?")[0];
 
-function safeJoin(root, rel){
-  const joined = path.join(root, rel);
-  const normRoot = root.endsWith(path.sep) ? root : root + path.sep;
-  if(!joined.startsWith(normRoot)) return null;
-  return joined;
+  // Root
+  if (urlPath === "/") return "/index.html";
+
+  // Gym Join
+  if (/^\/gym\/[^/]+\/join$/.test(urlPath)) {
+    return "/gym/join/index.html";
+  }
+
+  // Booking
+  if (/^\/app\/book\/class\/[^/]+$/.test(urlPath)) {
+    return "/app/book/class/index.html";
+  }
+
+  // Biz migrate routes
+  if (urlPath.startsWith("/biz/migrate/members")) {
+    return "/biz/migrate/members/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/migrate/schedule")) {
+    return "/biz/migrate/schedule/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/migrate/verify")) {
+    return "/biz/migrate/verify/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/migrate/commit")) {
+    return "/biz/migrate/commit/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/migrate/cutover")) {
+    return "/biz/migrate/cutover/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/migrate")) {
+    return "/biz/migrate/index.html";
+  }
+
+  if (urlPath.startsWith("/biz/check-in")) {
+    return "/biz/check-in/index.html";
+  }
+
+  // If exact file exists, serve it
+  return urlPath;
 }
 
 const server = http.createServer((req, res) => {
-  try{
-    const u = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-    let pathname = decodeURIComponent(u.pathname || '/');
+  let filePath = resolveRoute(req.url);
+  filePath = path.join(ROOT, filePath);
 
-    // Netlify-style dynamic route support for local/static server
-
-    // /app/post/:id -> /app/post/index.html (URL remains /app/post/:id)
-    const postMatch = pathname.match(/^\/app\/post\/([^\/]+)\/?$/);
-    if (postMatch && postMatch[1] && postMatch[1] !== 'index.html') {
-      pathname = '/app/post/index.html';
-    }
-
-    // /gym/:slug/join -> /gym/join/index.html
-    const gymJoinMatch = pathname.match(/^\/gym\/([^\/]+)\/join\/?$/);
-    if (gymJoinMatch && gymJoinMatch[1]) {
-      pathname = '/gym/join/index.html';
-    }
-
-    // /app/book/class/:class_session_id -> /app/book/class/index.html
-    const bookClassMatch = pathname.match(/^\/app\/book\/class\/([^\/]+)\/?$/);
-    if (bookClassMatch && bookClassMatch[1] && bookClassMatch[1] !== 'index.html') {
-      pathname = '/app/book/class/index.html';
-    }
-
-    // Normalize directory -> index.html
-    if(pathname.endsWith('/')) pathname += 'index.html';
-
-    // Default to root index
-    if(pathname === '') pathname = '/index.html';
-
-    const rel = pathname.replace(/^\/+/, '');
-    const filePath = safeJoin(ROOT, rel);
-
-    // No traversal
-    if(!filePath){
-      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('Forbidden');
-      return;
-    }
-
-    fs.stat(filePath, (err, st) => {
-      if(err || !st.isFile()){
-        res.writeHead(404, {
-          'Content-Type': 'text/plain; charset=utf-8',
-          // Prevent caching during E2E
-          'Cache-Control': 'no-store'
-        });
-        res.end('Not Found');
-        return;
-      }
-
-      // Stream file
-      res.writeHead(200, {
-        'Content-Type': contentType(filePath),
-        'Cache-Control': 'no-store',
-      });
-      fs.createReadStream(filePath).pipe(res);
-    });
-  }catch(e){
-    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
-    res.end('Server error');
+  // If directory, serve index.html
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(filePath, "index.html");
   }
+
+  if (!fs.existsSync(filePath)) {
+    res.writeHead(404);
+    res.end("Not found");
+    return;
+  }
+
+  const ext = path.extname(filePath);
+  const type = MIME[ext] || "application/octet-stream";
+
+  res.writeHead(200, { "Content-Type": type });
+  fs.createReadStream(filePath).pipe(res);
 });
 
 server.listen(PORT, () => {
-  console.log(`E2E static server: ${ROOT}`);
-  console.log(`Listening on http://localhost:${PORT}`);
+  console.log(`NDYRA local server running at http://localhost:${PORT}`);
+  console.log(`Serving from: ${ROOT}`);
 });

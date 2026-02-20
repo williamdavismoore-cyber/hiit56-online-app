@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "echo \"HIIT56 static build (no-op)\"",
-    "dev:site": "serve -s site -l 4173",
+    "dev:site": "node tools/static_server.cjs",
     "qa:smoke": "python tools/qa_smoke.py",
     "qa:e2e": "playwright test",
     "qa:lighthouse": "lhci autorun",
