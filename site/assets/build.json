@@ -1,8 +1,13 @@
 {
-  "cp": 32,
-  "label": "CP32",
-  "build_id": "2026-02-19_32",
-  "kit_version": "v3.4",
-  "date": "2026-02-19",
-  "notes": "CP32 (Blueprint v7): Step 1E Profile Screen + Step 1F Notifications. Adds full /app/profile UI with performance strip (local-only metrics), privacy settings modal (DB-first with local fallback), and My Posts feed. Adds /app/notifications UI wired to Supabase notifications table (demo mode supported). E2E reliability: static server now serves .mjs with application/javascript; Playwright now generates HTML report by default. FYP demo feed now has embedded fallback demo posts so .post-card always renders." 
+  {
+  "cp": 33,
+  "label": "CP33",
+  "build_id": "2026-02-20_33",
+  "kit_version": "v3.0",
+  "base": "CP32",
+  "build_date_iso": "2026-02-20T00:00:00Z",
+  "notes": [
+    "CP33: Blueprint v7.3.1 route scaffolds + gates v8 aligned."
+  ]
+}
 }
