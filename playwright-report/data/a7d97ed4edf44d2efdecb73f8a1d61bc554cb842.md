@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "NDYRA" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img "NDYRA" [ref=e5]
+    - generic [ref=e6]:
+      - link "App" [ref=e7] [cursor=pointer]:
+        - /url: /app/fyp/
+      - link "Workouts" [ref=e8] [cursor=pointer]:
+        - /url: /workouts/
+      - link "Pricing" [ref=e9] [cursor=pointer]:
+        - /url: /pricing.html
+      - link "For Gyms" [ref=e10] [cursor=pointer]:
+        - /url: /for-gyms/
+      - link "Join" [ref=e11] [cursor=pointer]:
+        - /url: /join.html
+      - link "Log in" [ref=e12] [cursor=pointer]:
+        - /url: /auth/login.html
+      - link "Business" [ref=e13] [cursor=pointer]:
+        - /url: /biz/
+      - generic [ref=e14]: Guest
+  - generic [ref=e15]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: Public Preview
+        - heading "NDYRA" [level=1] [ref=e20]
+        - paragraph [ref=e21]: Stream the full on‑demand class library and train with the NDYRA timer experience. This build includes a public preview for conversions and the member portal foundation.
+        - generic [ref=e22]:
+          - link "Explore workout previews" [ref=e23] [cursor=pointer]:
+            - /url: /workouts/
+          - link "Join" [ref=e24] [cursor=pointer]:
+            - /url: /join.html
+          - link "Log in" [ref=e25] [cursor=pointer]:
+            - /url: /auth/login.html
+        - generic [ref=e26]:
+          - strong [ref=e27]: Note
+          - text: Categories are now
+          - generic [ref=e28]: APPROVED
+          - text: . Hero + teaser videos are auto-selected from the latest 10 uploads per category until dedicated hero loops are delivered.
+      - generic "Homepage hero video" [ref=e29]
+    - generic [ref=e31]:
+      - heading "Public Workout Preview" [level=2] [ref=e32]
+      - generic [ref=e33]: Peloton-style category hero video headers (where available)
+    - generic [ref=e34]:
+      - link "Workout previews Browse categories See a small curated teaser set per category. Preview" [ref=e35] [cursor=pointer]:
+        - /url: /workouts/
+        - img "Workout previews" [ref=e37]
+        - generic [ref=e38]:
+          - generic [ref=e39]: Browse categories
+          - paragraph [ref=e40]: See a small curated teaser set per category.
+        - generic [ref=e41]: Preview
+      - link "Member app preview Member portal On-demand library + timer player (in progress). Member" [ref=e42] [cursor=pointer]:
+        - /url: /app/
+        - img "Member app preview" [ref=e44]
+        - generic [ref=e45]:
+          - generic [ref=e46]: Member portal
+          - paragraph [ref=e47]: On-demand library + timer player (in progress).
+        - generic [ref=e48]: Member
+      - link "Business portal preview Business portal Gym timer tools (Admin/Staff only). Business" [ref=e49] [cursor=pointer]:
+        - /url: /biz/
+        - img "Business portal preview" [ref=e51]
+        - generic [ref=e52]:
+          - generic [ref=e53]: Business portal
+          - paragraph [ref=e54]: Gym timer tools (Admin/Staff only).
+        - generic [ref=e55]: Business
+      - link "Login Demo login Switch between Guest / Member / Business modes for testing. Utility" [ref=e56] [cursor=pointer]:
+        - /url: /auth/login.html
+        - img "Login" [ref=e58]
+        - generic [ref=e59]:
+          - generic [ref=e60]: Demo login
+          - paragraph [ref=e61]: Switch between Guest / Member / Business modes for testing.
+        - generic [ref=e62]: Utility
+  - generic [ref=e65]: NDYRA — build preview (CP33). Category taxonomy is owner-approved (v1).
+```

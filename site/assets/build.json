@@ -1,11 +1,10 @@
 {
-  "cp": 33,
-  "label": "CP33",
-  "build_id": "2026-02-20_33",
-  "kit_version": "v3.x",
-  "base": "Blueprint v7.3.1",
-  "build_date_iso": "2026-02-20T00:00:00Z",
+  "cp": 32,
+  "label": "CP32",
+  "kit_version": "v7.3.1",
+  "build_id": "2026-02-20_CP32",
   "notes": [
-    "CP33: Blueprint v7.3.1 lock + gates + route scaffolds branch (gates-test)."
+    "This file must remain strict JSON (double quotes, no trailing commas).",
+    "Update cp/label/build_id per checkpoint."
   ]
 }

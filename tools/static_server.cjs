@@ -1,10 +1,8 @@
+#!/usr/bin/env node
 /**
- * NDYRA Static QA Server (no framework)
- *
- * Why this exists:
- * - Local QA + Playwright need deterministic routing for "pretty" URLs
- * - Must serve ES modules with correct MIME types (.mjs)
- * - Must NOT introduce a routing framework (Blueprint rule)
+ * NDYRA static server for local QA + Playwright.
+ * - Serves /site as static assets
+ * - Mirrors Netlify rewrite rules for dynamic, static-routed pages (Blueprint v7.3.1)
  *
  * Usage:
  *   node tools/static_server.cjs --root site --port 4173
@@ -13,106 +11,95 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const mime = require('mime');
 const url = require('url');
 
-function getArg(name, fallback) {
-  const idx = process.argv.indexOf(name);
-  if (idx === -1) return fallback;
-  const v = process.argv[idx + 1];
-  return v ?? fallback;
-}
+const argv = require('minimist')(process.argv.slice(2));
+const root = path.resolve(process.cwd(), argv.root || 'site');
+const port = Number(argv.port || 4173);
 
-const root = getArg('--root', 'site');
-const port = Number(getArg('--port', '4174'));
+// Route Map (matches Netlify _redirects)
+// IMPORTANT: no new routing framework — just deterministic static rewrites.
+const ROUTE_MAP = [
+  // Existing dynamic route
+  { match: /^\/app\/post\/[^/]+\/?$/i, to: '/app/post/index.html' },
 
-const CONTENT_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.mjs': 'application/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.ico': 'image/x-icon',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.mp4': 'video/mp4',
-  '.webm': 'video/webm',
-  '.txt': 'text/plain; charset=utf-8',
-  '.webmanifest': 'application/manifest+json; charset=utf-8',
-};
-
-/**
- * Pretty-URL route rewrites (Blueprint v7.3.1)
- *
- * IMPORTANT:
- * - These are ONLY rewrites to existing static HTML files.
- * - If the target file doesn't exist in the current build, rewrite is skipped.
- */
-const routeMap = [
-  // Existing
-  { re: /^\/app\/post\/[0-9a-fA-F-]{36}\/?$/, file: '/app/post/index.html' },
-
-  // Blueprint v7.3.1 (safe-guarded by existence checks)
-  { re: /^\/app\/book\/class\/[0-9a-fA-F-]{36}\/?$/, file: '/app/book/class/index.html' },
-  { re: /^\/gym\/[a-z0-9-]+\/join\/?$/i, file: '/gym/join/index.html' },
+  // Blueprint v7.3.1
+  { match: /^\/gym\/[^/]+\/join\/?$/i, to: '/gym/join/index.html' },
+  { match: /^\/app\/book\/class\/[^/]+\/?$/i, to: '/app/book/class/index.html' },
 ];
 
-function existsUnderRoot(file) {
-  try {
-    fs.accessSync(path.join(root, file));
-    return true;
-  } catch {
-    return false;
+function rewritePathname(pathname) {
+  // Normalize
+  if (!pathname) return '/';
+  // Strip query/hash already done by url.parse, but keep safety.
+  pathname = pathname.split('?')[0].split('#')[0];
+
+  // Netlify redirect: /app -> /app/fyp/ (QA visibility)
+  if (pathname === '/app' || pathname === '/app/') return { redirect: '/app/fyp/' };
+
+  for (const r of ROUTE_MAP) {
+    if (r.match.test(pathname)) return { file: r.to };
   }
+  return { file: pathname };
+}
+
+function send(res, code, headers, body) {
+  res.writeHead(code, headers || {});
+  res.end(body);
+}
+
+function sendFile(res, filePath) {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      send(res, 404, { 'Content-Type': 'text/plain' }, 'Not found');
+      return;
+    }
+    let contentType = mime.getType(filePath) || 'application/octet-stream';
+    // Force correct MIME for ESM
+    if (filePath.endsWith('.mjs')) contentType = 'application/javascript; charset=utf-8';
+    send(res, 200, { 'Content-Type': contentType }, data);
+  });
 }
 
 const server = http.createServer((req, res) => {
   const parsed = url.parse(req.url);
-  let pathname = decodeURIComponent(parsed.pathname || '/');
+  const pathname = parsed.pathname || '/';
 
-  // Rewrite dynamic/pretty routes to their static entrypoints
-  for (const r of routeMap) {
-    if (r.re.test(pathname) && existsUnderRoot(r.file)) {
-      pathname = r.file;
-      break;
-    }
+  const routed = rewritePathname(pathname);
+
+  if (routed.redirect) {
+    send(res, 302, { Location: routed.redirect }, '');
+    return;
   }
 
-  // Normalize directory/extension-less paths to /index.html
-  if (pathname.endsWith('/')) pathname += 'index.html';
-  if (!path.extname(pathname)) pathname = pathname.replace(/\/$/, '') + '/index.html';
+  let relPath = routed.file;
 
-  const absPath = path.join(root, pathname);
+  // directory -> index.html
+  if (relPath.endsWith('/')) relPath += 'index.html';
 
-  fs.readFile(absPath, (err, data) => {
-    if (err) {
-      res.writeHead(404, {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Cache-Control': 'no-store',
-      });
-      res.end('404 Not Found');
-      return;
-    }
+  // If they request a "pretty" URL without extension, try index.html.
+  // Example: /biz/migrate -> /biz/migrate/index.html
+  const hasExt = path.extname(relPath) !== '';
+  let candidate = relPath;
 
-    const ext = path.extname(absPath).toLowerCase();
-    const ct = CONTENT_TYPES[ext] || 'application/octet-stream';
+  let filePath = path.join(root, candidate);
+  if (!hasExt && fs.existsSync(path.join(root, relPath, 'index.html'))) {
+    filePath = path.join(root, relPath, 'index.html');
+  } else if (!hasExt && fs.existsSync(path.join(root, relPath + '.html'))) {
+    filePath = path.join(root, relPath + '.html');
+  }
 
-    res.writeHead(200, {
-      'Content-Type': ct,
-      // Prevent weird caching issues during QA.
-      'Cache-Control': 'no-store',
-    });
-    res.end(data);
-  });
+  // Fallback: if the exact file doesn't exist, check index.html in that folder.
+  if (!fs.existsSync(filePath)) {
+    const maybeIndex = path.join(root, candidate, 'index.html');
+    if (fs.existsSync(maybeIndex)) filePath = maybeIndex;
+  }
+
+  sendFile(res, filePath);
 });
 
-server.listen(port, '0.0.0.0', () => {
-  // Print both localhost + LAN hints
-  console.log(`Serving ${root} at:`);
-  console.log(`  http://localhost:${port}/`);
-  console.log(`  http://127.0.0.1:${port}/`);
+server.listen(port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Static server listening on http://localhost:${port} (root=${root})`);
 });

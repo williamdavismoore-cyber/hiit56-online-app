@@ -8,8 +8,12 @@
 /api/stripe/create-portal-session    /.netlify/functions/stripe_create_portal_session    200
 /api/stripe/webhook                  /.netlify/functions/stripe_webhook                  200
 
-# NDYRA "pretty" dynamic routes (Blueprint v7.3.1)
-# These rewrite dynamic path segments to static entrypoints.
-/app/post/*            /app/post/index.html        200
-/app/book/class/*      /app/book/class/index.html  200
-/gym/*/join             /gym/join/index.html       200
+# NDYRA dynamic routes
+/app/post/* /app/post/index.html 200
+
+# NDYRA QA visibility
+/app /app/fyp/ 302
+
+# NDYRA v7.3.1 dynamic routes (static rewrite -> index.html)
+/gym/*/join /gym/join/index.html 200
+/app/book/class/* /app/book/class/index.html 200

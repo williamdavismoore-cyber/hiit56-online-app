@@ -1054,10 +1054,10 @@ async function loadJSON(path){
 }
 
 // =========================
-// Build info + cache-busting (CP26)
+// Build info + cache-busting (CP28)
 // =========================
-const HIIT56_BUILD_ID = '2026-02-16_27';
-const HIIT56_BUILD_LABEL = 'CP27';
+const HIIT56_BUILD_ID = '2026-02-18_28';
+const HIIT56_BUILD_LABEL = 'CP28';
 let HIIT56_BUILD = { label: HIIT56_BUILD_LABEL, build_id: HIIT56_BUILD_ID };
 
 function withCacheBust(url){
@@ -2446,7 +2446,7 @@ async function pageMemberTimer(){
       const e = String(embed||'');
       if(layerEmbed(el) === e) return;
       if(!e){
-        el.innerHTML = '<img alt="HIIT56" src="/assets/branding/Desktop Poster.webp">';
+        el.innerHTML = '<img alt="NDYRA" src="/assets/branding/Desktop Poster.webp">';
         el.dataset.embed = '';
         return;
       }
@@ -3155,7 +3155,7 @@ async function pageMemberTimerBuilder(){
   function buildWorkout(){
     const p = readParams();
     const id = `mw_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;
-    const name = p.name || `HIIT56 Timer • ${isoDateLocal()}`;
+    const name = p.name || `NDYRA Timer • ${isoDateLocal()}`;
 
     const segments = [];
     if(p.warmup_sec>0){
@@ -3366,7 +3366,7 @@ async function pageBizGymTimerBuilder(){
   await loadMovesCatalog();
   await loadEquipmentCatalog();
 
-  const tenant = getTenant() || {slug:'global', name:'HIIT56'};
+  const tenant = getTenant() || {slug:'global', name:'NDYRA'};
   const tenantSlug = tenant.slug || 'global';
   const role = getRole();
 
@@ -3681,7 +3681,7 @@ async function pageBizGymTimer(){
   await loadEquipmentCatalog();
   await loadMovesCatalog();
 
-  const tenant = getTenant() || {slug:'global', name:'HIIT56'};
+  const tenant = getTenant() || {slug:'global', name:'NDYRA'};
   const tenantSlug = tenant.slug || 'global';
 
   const data = await loadJSON('/assets/data/timer_demos.json');
@@ -5245,7 +5245,7 @@ function hiit56TelemetrySend(eventType, payload) {
 
 function v56ReportError(err){
   try{
-    console.error('[HIIT56] Unhandled error:', err);
+    console.error('[NDYRA] Unhandled error:', err);
     hiit56TelemetrySend('frontend_error', hiit56NormalizeErr(err));
     let b = document.querySelector('[data-error-banner]');
     if(!b){

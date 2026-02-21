@@ -2,7 +2,7 @@
   "version": "cp15-pricing-v1",
   "currency": "USD",
   "member": {
-    "name": "HIIT56 Membership",
+    "name": "NDYRA Membership",
     "monthly": {
       "amount": 14.99,
       "interval": "month",
@@ -17,7 +17,7 @@
     "notes": "Display-only pricing. Source of truth is Stripe."
   },
   "business": {
-    "name": "HIIT56 Business",
+    "name": "NDYRA Business",
     "billing_unit": "per_location",
     "trial_days": 14,
     "tiers": {

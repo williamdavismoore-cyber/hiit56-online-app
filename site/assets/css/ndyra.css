@@ -1,0 +1,387 @@
+/* NDYRA UI Tokens (Blueprint v7) */
+:root{
+  --ndyra-bg-900:#07070A;
+  --ndyra-surface-800:#0F1016;
+  --ndyra-surface-700:#141522;
+  --ndyra-stroke-700:#242636;
+  --ndyra-text-100:#FFFFFF;
+  --ndyra-text-300:#B9BBC7;
+  --ndyra-text-500:#7C7F92;
+  --ndyra-red-500:#E10600;
+  --ndyra-red-600:#B90400;
+
+  --ndyra-radius-12:12px;
+  --ndyra-radius-16:16px;
+
+  --ndyra-shadow-soft: 0 10px 30px rgba(0,0,0,.35);
+}
+
+body.ndyra{
+  background: var(--ndyra-bg-900);
+  color: var(--ndyra-text-100);
+}
+
+/* AppShell */
+.ndyra-shell{
+  min-height: 100dvh;
+  display:flex;
+  flex-direction:column;
+}
+
+.ndyra-topbar{
+  position: sticky;
+  top:0;
+  z-index: 50;
+  background: linear-gradient(180deg, rgba(7,7,10,.95), rgba(7,7,10,.65));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(36,38,54,.55);
+}
+
+.ndyra-topbar .inner{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.ndyra-brand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  text-decoration:none;
+  color: inherit;
+}
+
+.ndyra-brand img{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  box-shadow: var(--ndyra-shadow-soft);
+}
+
+.ndyra-brand .wordmark{
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+
+.ndyra-topnav{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.ndyra-topnav a{
+  color: var(--ndyra-text-300);
+  text-decoration:none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.ndyra-topnav a:hover{
+  background: rgba(20,21,34,.75);
+  color: var(--ndyra-text-100);
+}
+
+.ndyra-topnav a.active{
+  background: rgba(20,21,34,.95);
+  color: var(--ndyra-text-100);
+  border: 1px solid rgba(36,38,54,.75);
+}
+
+.ndyra-main{
+  flex:1;
+  width:100%;
+}
+
+.ndyra-main .inner{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 14px 90px; /* space for bottom nav */
+}
+
+/* Feed */
+.ndyra-feed{
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+/* Post Card */
+.post-card{
+  background: linear-gradient(180deg, rgba(15,16,22,.95), rgba(15,16,22,.75));
+  border: 1px solid rgba(36,38,54,.75);
+  border-radius: var(--ndyra-radius-16);
+  overflow:hidden;
+  box-shadow: var(--ndyra-shadow-soft);
+}
+
+.post-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 12px 12px 10px;
+}
+
+.post-author{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width:0;
+}
+
+.post-author img{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  object-fit: cover;
+  background: rgba(20,21,34,.8);
+  border: 1px solid rgba(36,38,54,.75);
+}
+
+.post-author .meta{
+  display:flex;
+  flex-direction:column;
+  gap: 2px;
+  min-width:0;
+}
+
+.post-author .name{
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.post-author .sub{
+  color: var(--ndyra-text-500);
+  font-size: 12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.post-menu{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.post-menu button{
+  border: 1px solid rgba(36,38,54,.75);
+  background: rgba(20,21,34,.6);
+  color: var(--ndyra-text-300);
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor:pointer;
+}
+
+.post-menu button:hover{
+  color: var(--ndyra-text-100);
+  background: rgba(20,21,34,.9);
+}
+
+.post-media{
+  width:100%;
+  aspect-ratio: 9 / 16;
+  background: rgba(7,7,10,.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.post-media img,
+.post-media video{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
+.post-body{
+  padding: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.post-caption{
+  color: var(--ndyra-text-300);
+  font-size: 14px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.reaction-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 8px;
+}
+
+.reactions{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex-wrap:wrap;
+}
+
+.react-btn{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  border: 1px solid rgba(36,38,54,.75);
+  background: rgba(20,21,34,.55);
+  color: var(--ndyra-text-300);
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor:pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.react-btn:hover{
+  color: var(--ndyra-text-100);
+  background: rgba(20,21,34,.95);
+}
+
+.react-btn.active{
+  color: var(--ndyra-text-100);
+  border-color: rgba(225,6,0,.55);
+  background: rgba(225,6,0,.10);
+}
+
+.post-actions{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.post-actions a{
+  color: var(--ndyra-text-300);
+  text-decoration:none;
+  border: 1px solid rgba(36,38,54,.75);
+  background: rgba(20,21,34,.55);
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.post-actions a:hover{
+  color: var(--ndyra-text-100);
+  background: rgba(20,21,34,.95);
+}
+
+/* Bottom nav (mobile first) */
+.ndyra-bottomnav{
+  position: fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index: 60;
+  background: linear-gradient(180deg, rgba(15,16,22,.45), rgba(15,16,22,.95));
+  border-top: 1px solid rgba(36,38,54,.75);
+  backdrop-filter: blur(10px);
+}
+
+.ndyra-bottomnav .inner{
+  max-width: 980px;
+  margin: 0 auto;
+  display:flex;
+  justify-content:space-around;
+  padding: 10px 8px 12px;
+}
+
+.ndyra-bottomnav a{
+  color: var(--ndyra-text-500);
+  text-decoration:none;
+  font-weight: 800;
+  font-size: 12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  min-width: 64px;
+}
+
+.ndyra-bottomnav a .ico{
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ndyra-bottomnav a.active{
+  color: var(--ndyra-text-100);
+  background: rgba(20,21,34,.85);
+  border: 1px solid rgba(36,38,54,.75);
+}
+
+/* Desktop layout tweaks */
+@media (min-width: 900px){
+  .ndyra-main .inner{ padding-bottom: 24px; }
+  .ndyra-bottomnav{ display:none; }
+}
+
+
+/* ---------------------------------------------
+   NDYRA scaffold utilities (Blueprint v7.3.1)
+   --------------------------------------------- */
+
+.ndyra-card{
+  border:1px solid var(--ndyra-line);
+  background: rgba(255,255,255,0.02);
+  border-radius:16px;
+  padding:16px;
+}
+
+.ndyra-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+
+.ndyra-steps{
+  margin:14px 0 0;
+  padding-left:0;
+  list-style:none;
+}
+
+.ndyra-steps li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+  border-bottom:1px dashed rgba(255,255,255,0.08);
+}
+
+.ndyra-steps li:last-child{
+  border-bottom:none;
+}
+
+.ndyra-steps .dot{
+  width:10px;
+  height:10px;
+  border-radius:99px;
+  background: rgba(255,255,255,0.25);
+  display:inline-block;
+}
+
+
+.ndyra-steps li.active{
+  color: var(--ndyra-text-100);
+}
+
+.ndyra-steps li.active .dot{
+  background: var(--ndyra-red-500);
+}

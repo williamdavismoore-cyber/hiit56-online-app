@@ -1,10 +1,4 @@
-# NDYRA Netlify headers — baseline hardening (Report-Only CSP to avoid breaking previews)
-
-/sw.js
-  Cache-Control: no-store
-
-/assets/build.json
-  Cache-Control: no-store
+# HIIT56 Netlify headers — CP25 baseline hardening (Report-Only CSP to avoid breaking previews)
 
 /*
   X-Content-Type-Options: nosniff
@@ -22,3 +16,12 @@
 
 /assets/*
   Cache-Control: max-age=3600, must-revalidate
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/assets/build.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/assets/js/*.mjs
+  Content-Type: application/javascript; charset=utf-8

@@ -1,107 +1,121 @@
-/*
-  NDYRA Service Worker
-  --------------------
-  Goals:
-    • Never “stick” users on an old checkpoint build
-    • Keep offline behavior as a best-effort fallback (not a source of truth)
-    • Keep install resilient (missing files should NOT brick updates)
+// NDYRA Service Worker — safe caching, no stuck builds.
+// - Network-first for HTML + build.json
+// - Stale-while-revalidate for static assets
+// - Deletes old HIIT56 caches on activate
 
-  Key decisions:
-    • HTML navigations: NETWORK FIRST (fallback to cache/offline)
-    • Static assets: STALE-WHILE-REVALIDATE
-    • Minimal pre-cache to avoid install failures
-*/
-
-// Bump this when you want to force-refresh caches globally.
-// (HTML is network-first, so this is mostly for static assets.)
 const CACHE_NAME = 'ndyra-static-v1';
 
-// Keep precache small + safe (install should not fail on a 404).
-const PRECACHE_URLS = [
+// Keep this list minimal — the app should still work without SW.
+const CORE_ASSETS = [
+  '/',
+  '/index.html',
   '/offline.html',
   '/assets/build.json',
   '/assets/css/styles.css',
   '/assets/js/site.js',
-  '/manifest.webmanifest',
-  '/assets/branding/NDYRA App Icon.png',
+  // Branding (these filenames are kept for compatibility; assets are NDYRA-branded)
+  '/assets/branding/Hiit56 Online Primary Logo_For Dark Background.png',
+  '/assets/branding/Hiit56_Favicon_32x32.webp',
+  '/assets/branding/Hiit56_Favicon_180x180.webp',
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-
-    // Best-effort precache: never fail install because one asset is missing.
-    await Promise.allSettled(
-      PRECACHE_URLS.map(async (url) => {
-        try {
-          await cache.add(url);
-        } catch {
-          // Ignore individual failures.
-        }
-      })
-    );
-
-    self.skipWaiting();
+    try {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll(CORE_ASSETS);
+    } catch (e) {
+      // SW is best-effort; don't block install on cache errors.
+    } finally {
+      self.skipWaiting();
+    }
   })());
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    // Delete old caches (including legacy HIIT56 caches).
-    const keys = await caches.keys();
-    await Promise.all(
-      keys
-        .filter((k) => k !== CACHE_NAME)
-        .map((k) => caches.delete(k))
-    );
-
-    self.clients.claim();
+    try {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys.map((k) => {
+          // Purge any old HIIT56 caches, and any outdated NDYRA cache versions.
+          if (k.startsWith('hiit56-')) return caches.delete(k);
+          if (k.startsWith('ndyra-') && k !== CACHE_NAME) return caches.delete(k);
+          return Promise.resolve(false);
+        })
+      );
+    } finally {
+      self.clients.claim();
+    }
   })());
 });
 
+function isSameOrigin(request) {
+  try {
+    const url = new URL(request.url);
+    return url.origin === self.location.origin;
+  } catch (e) {
+    return false;
+  }
+}
+
+function isHTMLRequest(request) {
+  return request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
+}
+
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const fresh = await fetch(request);
+    // Cache successful responses (avoid caching opaque).
+    if (fresh && fresh.ok && fresh.type === 'basic') cache.put(request, fresh.clone());
+    return fresh;
+  } catch (e) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    // Last resort: offline page for navigations
+    if (isHTMLRequest(request)) {
+      const offline = await cache.match('/offline.html');
+      if (offline) return offline;
+    }
+    throw e;
+  }
+}
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(request);
+
+  const fetchPromise = fetch(request)
+    .then((fresh) => {
+      if (fresh && fresh.ok && fresh.type === 'basic') cache.put(request, fresh.clone());
+      return fresh;
+    })
+    .catch(() => null);
+
+  return cached || (await fetchPromise) || fetch(request);
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
+
+  // Only handle same-origin GET requests.
+  if (req.method !== 'GET' || !isSameOrigin(req)) return;
+
   const url = new URL(req.url);
 
-  // Only same-origin GET requests
-  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
-
-  // HTML navigations: network-first so users never get stuck on an old checkpoint.
-  const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
-  if (isHTML) {
-    event.respondWith((async () => {
-      try {
-        const res = await fetch(req, { cache: 'no-store' });
-
-        // Cache a copy (best-effort)
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(req, res.clone());
-
-        return res;
-      } catch {
-        const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match(req);
-        return cached || (await cache.match('/offline.html')) || new Response('Offline', { status: 503 });
-      }
-    })());
+  // Always network-first for build.json so labels & cache-busting stay correct.
+  if (url.pathname === '/assets/build.json') {
+    event.respondWith(networkFirst(req));
     return;
   }
 
-  // Static assets: stale-while-revalidate
-  event.respondWith((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const cached = await cache.match(req);
+  // Navigation requests: network-first (prevents stale HTML).
+  if (isHTMLRequest(req)) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
 
-    const fetchPromise = fetch(req)
-      .then((res) => {
-        // Only cache successful basic/cors responses.
-        if (res && (res.status === 200 || res.status === 0)) {
-          cache.put(req, res.clone());
-        }
-        return res;
-      })
-      .catch(() => cached);
-
-    return cached || fetchPromise;
-  })());
+  // Static assets: stale-while-revalidate.
+  event.respondWith(staleWhileRevalidate(req));
 });

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDYRA — Post</title>
+  <link rel="icon" href="/assets/branding/favicon.ico" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <link rel="stylesheet" href="/assets/css/ndyra.css" />
+</head>
+<body data-page="ndyra-post" class="ndyra">
+  <div class="ndyra-shell">
+
+    <div class="ndyra-topbar">
+      <div class="inner">
+        <a class="ndyra-brand" href="/app/fyp/">
+          <img src="/assets/branding/app-icon-192.png" alt="NDYRA" />
+          <span class="wordmark">NDYRA</span>
+        </a>
+
+        <nav class="ndyra-topnav" aria-label="Primary">
+          <a data-nav href="/app/fyp/">For You</a>
+          <a data-nav href="/app/following/">Following</a>
+          <a data-nav href="/app/create/">Create</a>
+          <a data-nav href="/app/notifications/">Alerts</a>
+          <a data-nav href="/app/profile/">Me</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="ndyra-main">
+      <div class="inner">
+        
+  <div class="ndyra-feed" data-ndyra-post></div>
+  <div class="muted" data-ndyra-status style="margin-top:12px;color:var(--ndyra-text-500);"></div>
+
+      </div>
+    </main>
+
+    <nav class="ndyra-bottomnav" aria-label="Bottom">
+      <div class="inner">
+        <a data-nav href="/app/fyp/"><span class="ico">🜂</span><span>For You</span></a>
+        <a data-nav href="/app/following/"><span class="ico">⟡</span><span>Following</span></a>
+        <a data-nav href="/app/create/"><span class="ico">＋</span><span>Create</span></a>
+        <a data-nav href="/app/notifications/"><span class="ico">⚑</span><span>Alerts</span></a>
+        <a data-nav href="/app/profile/"><span class="ico">⦿</span><span>Me</span></a>
+      </div>
+    </nav>
+
+    <div class="footer">
+      NDYRA — build preview (CP29). Social Core build in progress. Gates enforced (Audit + RLS).
+    </div>
+
+  </div>
+
+  <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
+</body>
+</html>

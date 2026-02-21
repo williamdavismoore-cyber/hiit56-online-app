@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/branding/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/branding/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/branding/apple-touch-icon-180.png">
+  <link rel="manifest" href="/assets/branding/site.webmanifest">
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+  <title>Biz Migration Cutover — NDYRA</title>
+</head>
+<body data-page="biz-migrate-cutover">
+<div class="header">
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <img src="/assets/branding/app-icon-192.png" alt="NDYRA">
+    </a>
+    <div class="nav">
+      <a href="/app/fyp/" title="NDYRA App">App</a>
+      <a href="/workouts/" title="Public workout previews">Workouts</a>
+            <a href="/pricing.html">Pricing</a>
+      <a href="/for-gyms/">For Gyms</a>
+<a href="/join.html">Join</a>
+<a href="/auth/login.html" class="primary">Log in</a>
+      <a href="/biz/" title="Staff/Admin only">Business</a>
+      <span class="badge" data-role-pill>Guest</span>
+      <span class="badge" data-tenant-pill style="display:none"></span>
+    </div>
+  </div>
+
+
+<div class="subnav">
+  <div class="wrap subnav-links">
+    <a href="/biz/migrate/">Overview</a>
+    <a href="/biz/migrate/members/">Members</a>
+    <a href="/biz/migrate/schedule/">Schedule</a>
+    <a href="/biz/migrate/verify/">Verify</a>
+    <a href="/biz/migrate/commit/">Commit</a>
+    <a href="/biz/migrate/cutover/">Cutover</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>Business Migration — Cutover</h1>
+  <p class="muted">Route: <code>/biz/migrate/cutover</code></p>
+  <div class="card">
+    <p>Flip system-of-record once checks are clean.</p>
+    <p class="muted">Scaffolded per Blueprint v7.3.1. Implementation will use Netlify Functions (idempotent) + audit logging.</p>
+  </div>
+</div>
+
+<div class="footer">NDYRA — build preview (CP??).</div>
+  <script src="/assets/js/site.js"></script>
+</body>
+</html>
