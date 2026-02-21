@@ -1,10 +1,11 @@
 {
-  "cp": 32,
-  "label": "CP32",
-  "kit_version": "v7.3.1",
-  "build_id": "2026-02-20_CP32",
+  "cp": 34,
+  "label": "CP34",
+  "build_id": "2026-02-20_34",
+  "kit_version": "v3.6",
+  "base": "CP33 v3.5",
+  "build_date_iso": "2026-02-20T23:54:21+00:00",
   "notes": [
-    "This file must remain strict JSON (double quotes, no trailing commas).",
-    "Update cp/label/build_id per checkpoint."
+    "CP34: Quick Join payment wiring + QA stability hardening (service worker + cache headers) — Blueprint v7.3.1."
   ]
 }

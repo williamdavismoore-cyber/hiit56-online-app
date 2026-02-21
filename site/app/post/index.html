@@ -38,6 +38,24 @@
 
       </div>
     </main>
+      <div class="comment-composer" data-comment-composer>
+        <div class="reply-pill" data-reply-pill hidden>
+          Replying to <span data-reply-to></span>
+          <button type="button" class="pill-x" data-reply-cancel aria-label="Cancel reply">×</button>
+        </div>
+
+        <form class="comment-form" data-comment-form>
+          <textarea class="comment-input" data-comment-input rows="1" placeholder="Write a comment…" maxlength="280"></textarea>
+          <button class="btn primary" type="submit" data-comment-submit disabled>Send</button>
+        </form>
+
+        <div class="comment-login" data-comment-login hidden>
+          <a class="btn primary" data-login-link href="/auth/login.html">Log in to comment</a>
+        </div>
+
+        <div class="tiny muted" data-comment-submit-status hidden></div>
+      </div>
+
 
     <nav class="ndyra-bottomnav" aria-label="Bottom">
       <div class="inner">

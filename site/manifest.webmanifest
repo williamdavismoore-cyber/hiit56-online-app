@@ -1,6 +1,6 @@
 {
-  "name": "HIIT56 Online",
-  "short_name": "HIIT56",
+  "name": "NDYRA",
+  "short_name": "NDYRA",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
@@ -15,6 +15,12 @@
       "src": "/assets/branding/app-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/assets/branding/app-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
-  ]
+  ],
+  "description": "NDYRA \u2014 Where discipline becomes identity."
 }

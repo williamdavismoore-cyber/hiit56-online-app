@@ -33,11 +33,45 @@
     <main class="ndyra-main">
       <div class="inner">
         
-  <div class="post-card" style="padding:16px;">
-    <h1 style="margin:0 0 8px 0;font-size:18px;">Coming online…</h1>
-    <p style="margin:0;color:var(--ndyra-text-300);" data-ndyra-stub></p>
-    <div class="muted" data-ndyra-status style="margin-top:12px;color:var(--ndyra-text-500);"></div>
-  </div>
+  <section class="ndyra-create">
+          <div class="feed-head">
+            <h1>Create</h1>
+            <div class="feed-meta">
+              <span class="badge">New post</span>
+              <span class="badge" data-create-status>Ready</span>
+            </div>
+          </div>
+
+          <form class="create-form" data-create-form>
+            <label class="create-label" for="create-text">Text</label>
+            <textarea id="create-text" class="create-text" data-create-text maxlength="300" placeholder="What's on your mind?"></textarea>
+
+            <div class="create-row">
+              <div class="create-field">
+                <label class="create-label" for="create-visibility">Visibility</label>
+                <select id="create-visibility" class="create-select" data-create-visibility>
+                  <option value="public">Public</option>
+                  <option value="followers">Followers</option>
+                                  </select>
+              </div>
+
+              <div class="create-field">
+                <label class="create-label" for="create-files">Media</label>
+                <input id="create-files" class="create-file" data-create-files type="file" accept="image/*,video/*" multiple />
+              </div>
+            </div>
+
+            <div class="create-media-grid" data-create-previews></div>
+            <div class="tiny muted" data-create-hint>Up to 10 files (images or videos). First media becomes the feed preview.</div>
+
+            <div class="create-actions">
+              <button class="btn primary" type="submit" data-create-submit disabled>Post</button>
+              <a class="btn" href="/app/fyp/">Cancel</a>
+            </div>
+
+            <div class="tiny muted" data-create-error hidden></div>
+          </form>
+        </section>
 
       </div>
     </main>

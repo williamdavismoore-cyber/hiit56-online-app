@@ -4,59 +4,251 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NDYRA — Profile</title>
-  <link rel="icon" href="/assets/branding/favicon.ico" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png" />
+
+  <link rel="icon" href="/assets/branding/app-icon-192.png" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link rel="stylesheet" href="/assets/css/ndyra.css" />
 </head>
-<body data-page="ndyra-profile" class="ndyra">
-  <div class="ndyra-shell">
+<body data-page="profile">
+  <header class="header app" role="banner">
+    <div class="inner">
+      <a class="brand" href="/">
+        <img src="/assets/branding/app-icon-192.png" alt="NDYRA" />
+        <span>NDYRA</span>
+      </a>
 
-    <div class="ndyra-topbar">
-      <div class="inner">
-        <a class="ndyra-brand" href="/app/fyp/">
-          <img src="/assets/branding/app-icon-192.png" alt="NDYRA" />
-          <span class="wordmark">NDYRA</span>
+      <nav class="nav" aria-label="Primary">
+        <a href="/app/fyp/" title="For You">For You</a>
+        <a href="/workouts/" title="Training">Training</a>
+        <a href="/app/timer/" title="Timer">Timer</a>
+        <a href="/app/notifications/" title="Notifications">Notifications</a>
+        <a class="active" href="/app/profile/" title="Profile">Me</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn outline" href="/auth/login.html?next=%2Fapp%2Fprofile%2F">Switch</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="ndyra-main" role="main">
+    <div class="inner">
+      <section class="profile-card" data-profile-card>
+        <div class="profile-head">
+          <div class="profile-id">
+            <img class="profile-avatar" data-profile-avatar src="/assets/branding/app-icon-192.png" alt="Profile avatar" />
+            <div class="profile-meta">
+              <div class="profile-name" data-profile-name>—</div>
+              <div class="profile-handle" data-profile-handle>@—</div>
+              <div class="profile-sub" data-profile-sub>—</div>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn outline" type="button" data-profile-privacy>Privacy</button>
+            <button class="btn primary" type="button" data-profile-edit>Edit</button>
+          </div>
+        </div>
+
+        <div class="profile-stats" role="group" aria-label="Profile stats">
+          <div class="stat">
+            <div class="num" data-stat-posts>0</div>
+            <div class="label">Posts</div>
+          </div>
+          <div class="stat">
+            <div class="num" data-stat-followers>0</div>
+            <div class="label">Followers</div>
+          </div>
+          <div class="stat">
+            <div class="num" data-stat-following>0</div>
+            <div class="label">Following</div>
+          </div>
+        </div>
+
+        <div class="profile-badges" aria-label="Badges" data-profile-badges>
+          <span class="pill" data-badge-premium hidden>Premium</span>
+          <span class="pill" data-badge-gym hidden>Gym Member</span>
+          <span class="muted" data-badges-empty>Badges unlock as features come online.</span>
+        </div>
+      </section>
+
+      <section class="profile-strip" aria-label="Performance Strip">
+        <div class="section-title-row">
+          <h2 class="section-title">Performance Strip</h2>
+          <button class="btn outline" type="button" data-metrics-edit>Edit</button>
+        </div>
+
+        <div class="metrics-grid" data-metrics-grid>
+          <button class="metric" type="button" data-metric="resting_hr">
+            <div class="k">Resting HR</div>
+            <div class="v"><span data-metric-value="resting_hr">—</span><span class="u">bpm</span></div>
+          </button>
+          <button class="metric" type="button" data-metric="hrv">
+            <div class="k">HRV</div>
+            <div class="v"><span data-metric-value="hrv">—</span><span class="u">ms</span></div>
+          </button>
+          <button class="metric" type="button" data-metric="vo2">
+            <div class="k">VO₂ Max</div>
+            <div class="v"><span data-metric-value="vo2">—</span></div>
+          </button>
+          <button class="metric" type="button" data-metric="weekly_minutes">
+            <div class="k">Weekly Minutes</div>
+            <div class="v"><span data-metric-value="weekly_minutes">—</span></div>
+          </button>
+          <button class="metric" type="button" data-metric="streak">
+            <div class="k">Streak</div>
+            <div class="v"><span data-metric-value="streak">—</span><span class="u">days</span></div>
+          </button>
+        </div>
+
+        <div class="hint muted">Tap a tile to edit quickly. These values are local-only until Profile Sync is wired into Supabase.</div>
+      </section>
+
+      <section class="profile-identity" aria-label="Training Identity">
+        <div class="section-title-row">
+          <h2 class="section-title">Training Identity</h2>
+          <span class="muted">(editable soon)</span>
+        </div>
+
+        <div class="tag-row" data-identity-tags>
+          <span class="pill">Hyrox</span>
+          <span class="pill">HIIT</span>
+          <span class="pill">Strength</span>
+          <span class="pill">Mobility</span>
+        </div>
+      </section>
+
+      <section class="profile-posts" aria-label="My posts">
+        <div class="section-title-row">
+          <h2 class="section-title">My Posts</h2>
+          <span class="muted" data-posts-meta>—</span>
+        </div>
+
+        <div class="ndyra-feed" data-profile-posts></div>
+
+        <div class="row" style="justify-content:center;margin-top:12px;">
+          <button class="btn outline" type="button" data-profile-loadmore>Load more</button>
+        </div>
+      </section>
+
+      <section class="profile-links" aria-label="Profile links">
+        <a class="card" href="/app/profile/?src=demo" title="Preview demo profile">
+          <div class="card-title">Demo Mode</div>
+          <div class="muted">Open this page without auth to preview layout and components.</div>
         </a>
+      </section>
+    </div>
+  </main>
 
-        <nav class="ndyra-topnav" aria-label="Primary">
-          <a data-nav href="/app/fyp/">For You</a>
-          <a data-nav href="/app/following/">Following</a>
-          <a data-nav href="/app/create/">Create</a>
-          <a data-nav href="/app/notifications/">Alerts</a>
-          <a data-nav href="/app/profile/">Me</a>
-        </nav>
+  <!-- Edit Profile Modal -->
+  <div class="modal" data-modal="edit-profile" aria-hidden="true">
+    <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Edit profile">
+      <div class="modal-head">
+        <div class="title">Edit Profile</div>
+        <button class="modal-close" type="button" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span class="label">Display name</span>
+          <input type="text" data-edit-name placeholder="Your name" />
+        </label>
+        <label class="field">
+          <span class="label">Handle</span>
+          <input type="text" data-edit-handle placeholder="your_handle" />
+          <div class="muted">If your DB schema doesn't have a handle column yet, we won't save it.</div>
+        </label>
+        <label class="field">
+          <span class="label">Avatar URL</span>
+          <input type="url" data-edit-avatar placeholder="https://..." />
+          <div class="muted">Tip: use a square image for best results.</div>
+        </label>
+        <div class="row" style="justify-content:flex-end;gap:10px;">
+          <button class="btn outline" type="button" data-modal-close>Cancel</button>
+          <button class="btn primary" type="button" data-save-profile>Save</button>
+        </div>
       </div>
     </div>
-
-    <main class="ndyra-main">
-      <div class="inner">
-        
-  <div class="post-card" style="padding:16px;">
-    <h1 style="margin:0 0 8px 0;font-size:18px;">Coming online…</h1>
-    <p style="margin:0;color:var(--ndyra-text-300);" data-ndyra-stub></p>
-    <div class="muted" data-ndyra-status style="margin-top:12px;color:var(--ndyra-text-500);"></div>
   </div>
 
+  <!-- Privacy Modal -->
+  <div class="modal" data-modal="privacy" aria-hidden="true">
+    <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Privacy settings">
+      <div class="modal-head">
+        <div class="title">Privacy</div>
+        <button class="modal-close" type="button" data-modal-close>Close</button>
       </div>
-    </main>
+      <div class="modal-body">
+        <label class="toggle">
+          <input type="checkbox" data-privacy="show_profile_public" />
+          <span>Profile visible to public</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" data-privacy="show_posts_public" />
+          <span>Posts visible to public</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" data-privacy="show_biometrics_public" />
+          <span>Biometrics visible to public</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" data-privacy="allow_follow_requests" />
+          <span>Allow follow requests</span>
+        </label>
 
-    <nav class="ndyra-bottomnav" aria-label="Bottom">
-      <div class="inner">
-        <a data-nav href="/app/fyp/"><span class="ico">🜂</span><span>For You</span></a>
-        <a data-nav href="/app/following/"><span class="ico">⟡</span><span>Following</span></a>
-        <a data-nav href="/app/create/"><span class="ico">＋</span><span>Create</span></a>
-        <a data-nav href="/app/notifications/"><span class="ico">⚑</span><span>Alerts</span></a>
-        <a data-nav href="/app/profile/"><span class="ico">⦿</span><span>Me</span></a>
+        <div class="row" style="justify-content:flex-end;gap:10px;">
+          <button class="btn outline" type="button" data-modal-close>Cancel</button>
+          <button class="btn primary" type="button" data-save-privacy>Save</button>
+        </div>
+
+        <div class="muted" style="margin-top:10px;">If the <code>privacy_settings</code> table isn't installed yet, these settings stay local-only.</div>
       </div>
-    </nav>
-
-    <div class="footer">
-      NDYRA — build preview (CP29). Social Core build in progress. Gates enforced (Audit + RLS).
     </div>
-
   </div>
+
+  <!-- Metrics Modal -->
+  <div class="modal" data-modal="metrics" aria-hidden="true">
+    <div class="modal-inner" role="dialog" aria-modal="true" aria-label="Edit metrics">
+      <div class="modal-head">
+        <div class="title">Edit Performance Strip</div>
+        <button class="modal-close" type="button" data-modal-close>Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid-2">
+          <label class="field">
+            <span class="label">Resting HR (bpm)</span>
+            <input type="number" min="0" step="1" data-metrics-input="resting_hr" />
+          </label>
+          <label class="field">
+            <span class="label">HRV (ms)</span>
+            <input type="number" min="0" step="1" data-metrics-input="hrv" />
+          </label>
+          <label class="field">
+            <span class="label">VO₂ Max</span>
+            <input type="number" min="0" step="0.1" data-metrics-input="vo2" />
+          </label>
+          <label class="field">
+            <span class="label">Weekly Minutes</span>
+            <input type="number" min="0" step="1" data-metrics-input="weekly_minutes" />
+          </label>
+          <label class="field">
+            <span class="label">Streak (days)</span>
+            <input type="number" min="0" step="1" data-metrics-input="streak" />
+          </label>
+        </div>
+
+        <div class="row" style="justify-content:flex-end;gap:10px;">
+          <button class="btn outline" type="button" data-modal-close>Cancel</button>
+          <button class="btn primary" type="button" data-save-metrics>Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <div class="inner">
+      <div>NDYRA — build preview (CP31). Blueprint-first, no-drift build.</div>
+    </div>
+  </footer>
 
   <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
 </body>

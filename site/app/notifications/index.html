@@ -3,60 +3,68 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NDYRA — Alerts</title>
-  <link rel="icon" href="/assets/branding/favicon.ico" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/assets/branding/apple-touch-icon-180.png" />
+  <title>NDYRA — Notifications</title>
+
+  <link rel="icon" href="/assets/branding/app-icon-192.png" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link rel="stylesheet" href="/assets/css/ndyra.css" />
 </head>
-<body data-page="ndyra-notifications" class="ndyra">
-  <div class="ndyra-shell">
+<body data-page="notifications">
+  <header class="header app" role="banner">
+    <div class="inner">
+      <a class="brand" href="/">
+        <img src="/assets/branding/app-icon-192.png" alt="NDYRA" />
+        <span>NDYRA</span>
+      </a>
 
-    <div class="ndyra-topbar">
-      <div class="inner">
-        <a class="ndyra-brand" href="/app/fyp/">
-          <img src="/assets/branding/app-icon-192.png" alt="NDYRA" />
-          <span class="wordmark">NDYRA</span>
-        </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/app/fyp/" title="For You">For You</a>
+        <a href="/workouts/" title="Training">Training</a>
+        <a href="/app/timer/" title="Timer">Timer</a>
+        <a class="active" href="/app/notifications/" title="Notifications">Notifications</a>
+        <a href="/app/profile/" title="Profile">Me</a>
+      </nav>
 
-        <nav class="ndyra-topnav" aria-label="Primary">
-          <a data-nav href="/app/fyp/">For You</a>
-          <a data-nav href="/app/following/">Following</a>
-          <a data-nav href="/app/create/">Create</a>
-          <a data-nav href="/app/notifications/">Alerts</a>
-          <a data-nav href="/app/profile/">Me</a>
-        </nav>
+      <div class="header-actions">
+        <a class="btn outline" href="/auth/login.html?next=%2Fapp%2Fnotifications%2F">Switch</a>
       </div>
     </div>
+  </header>
 
-    <main class="ndyra-main">
-      <div class="inner">
-        
-  <div class="post-card" style="padding:16px;">
-    <h1 style="margin:0 0 8px 0;font-size:18px;">Coming online…</h1>
-    <p style="margin:0;color:var(--ndyra-text-300);" data-ndyra-stub></p>
-    <div class="muted" data-ndyra-status style="margin-top:12px;color:var(--ndyra-text-500);"></div>
-  </div>
+  <main class="ndyra-main" role="main">
+    <div class="inner">
+      <section class="ndyra-panel">
+        <div class="section-title-row">
+          <h1 class="section-title">Notifications</h1>
+          <div class="row" style="gap:10px;">
+            <button class="btn outline" type="button" data-notifs-refresh>Refresh</button>
+            <button class="btn primary" type="button" data-notifs-markall>Mark all read</button>
+          </div>
+        </div>
 
-      </div>
-    </main>
+        <div class="muted" data-notifs-status>Loading…</div>
 
-    <nav class="ndyra-bottomnav" aria-label="Bottom">
-      <div class="inner">
-        <a data-nav href="/app/fyp/"><span class="ico">🜂</span><span>For You</span></a>
-        <a data-nav href="/app/following/"><span class="ico">⟡</span><span>Following</span></a>
-        <a data-nav href="/app/create/"><span class="ico">＋</span><span>Create</span></a>
-        <a data-nav href="/app/notifications/"><span class="ico">⚑</span><span>Alerts</span></a>
-        <a data-nav href="/app/profile/"><span class="ico">⦿</span><span>Me</span></a>
-      </div>
-    </nav>
+        <div class="notif-list" data-notifs-list></div>
 
-    <div class="footer">
-      NDYRA — build preview (CP29). Social Core build in progress. Gates enforced (Audit + RLS).
+        <div class="row" style="justify-content:center;margin-top:12px;">
+          <button class="btn outline" type="button" data-notifs-loadmore hidden>Load more</button>
+        </div>
+      </section>
+
+      <section class="ndyra-panel">
+        <div class="section-title-row">
+          <h2 class="section-title">Tip</h2>
+        </div>
+        <div class="muted">Notifications are driven by database triggers (reactions, comments, follows). If you see nothing, try demo mode: <a href="/app/notifications/?src=demo">/app/notifications/?src=demo</a></div>
+      </section>
     </div>
+  </main>
 
-  </div>
+  <footer class="footer" role="contentinfo">
+    <div class="inner">
+      <div>NDYRA — build preview (CP31). Blueprint-first, no-drift build.</div>
+    </div>
+  </footer>
 
   <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
 </body>

@@ -41,11 +41,12 @@
       <div>
         <div class="badge">Public Preview</div>
         <h1>NDYRA</h1>
-        <p>Stream the full on‑demand class library and train with the NDYRA timer experience. This build includes a public preview for conversions and the member portal foundation.</p>
+        <p>NDYRA preview build: Social Core (For You / Following), Quick Join (gym onboarding), and the evolving member + business portals. Legacy workout previews remain accessible while we finish the NDYRA-first home experience.</p>
         <div class="btn-row">
-          <a class="btn primary" href="/workouts/">Explore workout previews</a>
-          <a class="btn" href="/join.html">Join</a>
-          <a class="btn" href="/auth/login.html">Log in</a>
+          <a class="btn primary" href="/app/fyp/?src=demo">Open NDYRA demo feed</a>
+          <a class="btn" href="/app/following/?src=demo">Following</a>
+          <a class="btn" href="/gym/demo-gym/join">Quick Join</a>
+          <a class="btn" href="/workouts/">Workout previews</a>
         </div>
         <div class="banner" style="margin-top:16px">
           <strong>Note</strong>
@@ -60,44 +61,44 @@
   </div>
 
   <div class="section-title">
-    <h2>Public Workout Preview</h2>
-    <div class="small">Peloton-style category hero video headers (where available)</div>
+    <h2>NDYRA Surfaces to QA</h2>
+    <div class="small">These are the routes we actively validate in E2E + Lighthouse.</div>
   </div>
   <div class="grid">
-    <a class="card" href="/workouts/">
-      <div class="thumb"><img src="/assets/branding/NDYRA_Social Media Thumb.webp" alt="Workout previews" loading="lazy"></div>
+    <a class="card" href="/app/fyp/?src=demo">
+      <div class="thumb"><img src="/assets/branding/app-icon-192.png" alt="NDYRA For You" loading="lazy"></div>
       <div class="meta">
-        <div class="title">Browse categories</div>
-        <p class="small">See a small curated teaser set per category.</p>
+        <div class="title">For You feed</div>
+        <p class="small">Demo mode feed render + post cards.</p>
+      </div>
+      <div class="pill">NDYRA</div>
+    </a>
+
+    <a class="card" href="/app/following/?src=demo">
+      <div class="thumb"><img src="/assets/branding/app-icon-192.png" alt="NDYRA Following" loading="lazy"></div>
+      <div class="meta">
+        <div class="title">Following feed</div>
+        <p class="small">Demo mode following view.</p>
+      </div>
+      <div class="pill">NDYRA</div>
+    </a>
+
+    <a class="card" href="/gym/demo-gym/join">
+      <div class="thumb"><img src="/assets/branding/app-icon-192.png" alt="Quick Join" loading="lazy"></div>
+      <div class="meta">
+        <div class="title">Quick Join</div>
+        <p class="small">Account → Waiver → Payment → Confirmation.</p>
+      </div>
+      <div class="pill">Join</div>
+    </a>
+
+    <a class="card" href="/workouts/">
+      <div class="thumb"><img src="/assets/branding/Desktop Poster.webp" alt="Workout previews" loading="lazy"></div>
+      <div class="meta">
+        <div class="title">Workout previews</div>
+        <p class="small">Legacy teaser browsing (still useful for conversion QA).</p>
       </div>
       <div class="pill">Preview</div>
-    </a>
-
-    <a class="card" href="/app/">
-      <div class="thumb"><img src="/assets/branding/Desktop Poster.webp" alt="Member app preview" loading="lazy"></div>
-      <div class="meta">
-        <div class="title">Member portal</div>
-        <p class="small">On-demand library + timer player (in progress).</p>
-      </div>
-      <div class="pill">Member</div>
-    </a>
-
-    <a class="card" href="/biz/">
-      <div class="thumb"><img src="/assets/branding/Mobile Poster.webp" alt="Business portal preview" loading="lazy"></div>
-      <div class="meta">
-        <div class="title">Business portal</div>
-        <p class="small">Gym timer tools (Admin/Staff only).</p>
-      </div>
-      <div class="pill">Business</div>
-    </a>
-
-    <a class="card" href="/auth/login.html">
-      <div class="thumb"><img src="/assets/branding/app-icon-192.png" alt="Login" loading="lazy"></div>
-      <div class="meta">
-        <div class="title">Demo login</div>
-        <p class="small">Switch between Guest / Member / Business modes for testing.</p>
-      </div>
-      <div class="pill">Utility</div>
     </a>
   </div>
 </div>

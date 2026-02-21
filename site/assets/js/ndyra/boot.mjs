@@ -28,6 +28,7 @@ async function boot(){
 
   const page = document.body?.dataset?.page || '';
   const map = {
+    // Member app
     'ndyra-fyp': './pages/fyp.mjs',
     'ndyra-following': './pages/following.mjs',
     'ndyra-create': './pages/create.mjs',
@@ -35,11 +36,15 @@ async function boot(){
     'ndyra-profile': './pages/profile.mjs',
     'ndyra-post': './pages/post.mjs',
 
-  // Blueprint v7.3.1 route scaffolds
-  'ndyra-gym-join': './pages/gym_join.mjs',
-  'ndyra-book-class': './pages/book_class.mjs',
-  'ndyra-biz-checkin': './pages/biz_checkin.mjs',
-  'ndyra-biz-migrate': './pages/biz_migrate.mjs',
+    // Public flows
+    'ndyra-gym-join': './pages/gymJoin.mjs',
+
+    // Booking
+    'ndyra-book-class': './pages/bookClass.mjs',
+
+    // Business portal
+    'ndyra-biz-migrate': './pages/bizMigrate.mjs',
+    'ndyra-biz-checkin': './pages/bizCheckin.mjs',
   };
 
   const modPath = map[page];

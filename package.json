@@ -8,22 +8,24 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.95.3",
+    "mime-types": "^2.1.35",
+    "node-fetch": "^3.3.2",
+    "serve": "^14.2.5",
     "stripe": "^16.0.0"
   },
   "scripts": {
     "build": "echo \"NDYRA static build (no-op)\"",
-    "dev:site": "serve -s site -l 4173",
+    "dev:site": "node tools/static_server.cjs --root site --port 4173",
+    "dev:site:serve": "serve -s site -l 4173",
+    "start:qa": "npm run dev:site",
     "qa:smoke": "python tools/qa_smoke.py",
     "qa:e2e": "playwright test",
     "qa:lighthouse": "lhci autorun",
     "qa:vimeo:allowlist": "node tools/vimeo_allowlist_check.mjs --domain localhost --domain 127.0.0.1",
-    "qa:all": "npm run qa:smoke && npm run qa:e2e && npm run qa:lighthouse",
-    "start:qa": "node tools/static_server.cjs --root site --port 4173",
-    "start": "npm run start:qa"
+    "qa:all": "npm run qa:smoke && npm run qa:e2e && npm run qa:lighthouse"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.58.2",
-    "serve": "^14.2.5"
+    "@playwright/test": "^1.58.2"
   }
 }

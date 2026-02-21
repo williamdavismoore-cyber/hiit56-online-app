@@ -1,105 +1,127 @@
 #!/usr/bin/env node
 /**
- * NDYRA static server for local QA + Playwright.
- * - Serves /site as static assets
- * - Mirrors Netlify rewrite rules for dynamic, static-routed pages (Blueprint v7.3.1)
+ * Tiny static server for Playwright E2E.
+ * Why: avoids SPA-rewrite quirks and guarantees querystrings don't affect file resolution.
  *
  * Usage:
- *   node tools/static_server.cjs --root site --port 4173
+ *   node tools/static_server.cjs --root site --port 4174
  */
-
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const mime = require('mime');
-const url = require('url');
+const { URL } = require('url');
 
-const argv = require('minimist')(process.argv.slice(2));
-const root = path.resolve(process.cwd(), argv.root || 'site');
-const port = Number(argv.port || 4173);
-
-// Route Map (matches Netlify _redirects)
-// IMPORTANT: no new routing framework — just deterministic static rewrites.
-const ROUTE_MAP = [
-  // Existing dynamic route
-  { match: /^\/app\/post\/[^/]+\/?$/i, to: '/app/post/index.html' },
-
-  // Blueprint v7.3.1
-  { match: /^\/gym\/[^/]+\/join\/?$/i, to: '/gym/join/index.html' },
-  { match: /^\/app\/book\/class\/[^/]+\/?$/i, to: '/app/book/class/index.html' },
-];
-
-function rewritePathname(pathname) {
-  // Normalize
-  if (!pathname) return '/';
-  // Strip query/hash already done by url.parse, but keep safety.
-  pathname = pathname.split('?')[0].split('#')[0];
-
-  // Netlify redirect: /app -> /app/fyp/ (QA visibility)
-  if (pathname === '/app' || pathname === '/app/') return { redirect: '/app/fyp/' };
-
-  for (const r of ROUTE_MAP) {
-    if (r.match.test(pathname)) return { file: r.to };
-  }
-  return { file: pathname };
+function arg(name, fallback=null){
+  const idx = process.argv.indexOf(`--${name}`);
+  if(idx === -1) return fallback;
+  const val = process.argv[idx+1];
+  if(!val || val.startsWith('--')) return fallback;
+  return val;
 }
 
-function send(res, code, headers, body) {
-  res.writeHead(code, headers || {});
-  res.end(body);
+const ROOT = path.resolve(arg('root', 'site'));
+const PORT = Number(arg('port', process.env.PW_PORT || 4174));
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.ico': 'image/x-icon',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.map': 'application/json; charset=utf-8',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+};
+
+function contentType(filePath){
+  const ext = path.extname(filePath).toLowerCase();
+  return MIME[ext] || 'application/octet-stream';
 }
 
-function sendFile(res, filePath) {
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      send(res, 404, { 'Content-Type': 'text/plain' }, 'Not found');
-      return;
-    }
-    let contentType = mime.getType(filePath) || 'application/octet-stream';
-    // Force correct MIME for ESM
-    if (filePath.endsWith('.mjs')) contentType = 'application/javascript; charset=utf-8';
-    send(res, 200, { 'Content-Type': contentType }, data);
-  });
+function safeJoin(root, rel){
+  const joined = path.join(root, rel);
+  const normRoot = root.endsWith(path.sep) ? root : root + path.sep;
+  if(!joined.startsWith(normRoot)) return null;
+  return joined;
 }
 
 const server = http.createServer((req, res) => {
-  const parsed = url.parse(req.url);
-  const pathname = parsed.pathname || '/';
+  try{
+    const u = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    let pathname = decodeURIComponent(u.pathname || '/');
 
-  const routed = rewritePathname(pathname);
+    // Netlify-style dynamic route support for local/static server
 
-  if (routed.redirect) {
-    send(res, 302, { Location: routed.redirect }, '');
-    return;
+    // /app/post/:id -> /app/post/index.html (URL remains /app/post/:id)
+    const postMatch = pathname.match(/^\/app\/post\/([^\/]+)\/?$/);
+    if (postMatch && postMatch[1] && postMatch[1] !== 'index.html') {
+      pathname = '/app/post/index.html';
+    }
+
+    // /gym/:slug/join -> /gym/join/index.html
+    const gymJoinMatch = pathname.match(/^\/gym\/([^\/]+)\/join\/?$/);
+    if (gymJoinMatch && gymJoinMatch[1]) {
+      pathname = '/gym/join/index.html';
+    }
+
+    // /app/book/class/:class_session_id -> /app/book/class/index.html
+    const bookClassMatch = pathname.match(/^\/app\/book\/class\/([^\/]+)\/?$/);
+    if (bookClassMatch && bookClassMatch[1] && bookClassMatch[1] !== 'index.html') {
+      pathname = '/app/book/class/index.html';
+    }
+
+    // Normalize directory -> index.html
+    if(pathname.endsWith('/')) pathname += 'index.html';
+
+    // Default to root index
+    if(pathname === '') pathname = '/index.html';
+
+    const rel = pathname.replace(/^\/+/, '');
+    const filePath = safeJoin(ROOT, rel);
+
+    // No traversal
+    if(!filePath){
+      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Forbidden');
+      return;
+    }
+
+    fs.stat(filePath, (err, st) => {
+      if(err || !st.isFile()){
+        res.writeHead(404, {
+          'Content-Type': 'text/plain; charset=utf-8',
+          // Prevent caching during E2E
+          'Cache-Control': 'no-store'
+        });
+        res.end('Not Found');
+        return;
+      }
+
+      // Stream file
+      res.writeHead(200, {
+        'Content-Type': contentType(filePath),
+        'Cache-Control': 'no-store',
+      });
+      fs.createReadStream(filePath).pipe(res);
+    });
+  }catch(e){
+    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.end('Server error');
   }
-
-  let relPath = routed.file;
-
-  // directory -> index.html
-  if (relPath.endsWith('/')) relPath += 'index.html';
-
-  // If they request a "pretty" URL without extension, try index.html.
-  // Example: /biz/migrate -> /biz/migrate/index.html
-  const hasExt = path.extname(relPath) !== '';
-  let candidate = relPath;
-
-  let filePath = path.join(root, candidate);
-  if (!hasExt && fs.existsSync(path.join(root, relPath, 'index.html'))) {
-    filePath = path.join(root, relPath, 'index.html');
-  } else if (!hasExt && fs.existsSync(path.join(root, relPath + '.html'))) {
-    filePath = path.join(root, relPath + '.html');
-  }
-
-  // Fallback: if the exact file doesn't exist, check index.html in that folder.
-  if (!fs.existsSync(filePath)) {
-    const maybeIndex = path.join(root, candidate, 'index.html');
-    if (fs.existsSync(maybeIndex)) filePath = maybeIndex;
-  }
-
-  sendFile(res, filePath);
 });
 
-server.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Static server listening on http://localhost:${port} (root=${root})`);
+server.listen(PORT, () => {
+  console.log(`E2E static server: ${ROOT}`);
+  console.log(`Listening on http://localhost:${PORT}`);
 });

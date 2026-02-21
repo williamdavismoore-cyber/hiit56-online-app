@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test('home loads and header nav renders', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle(/HIIT56/i);
+  await expect(page).toHaveTitle(/NDYRA/i);
 
   // Header exists
   await expect(page.locator('.header')).toBeVisible();

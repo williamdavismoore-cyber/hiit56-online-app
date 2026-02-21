@@ -259,7 +259,11 @@ exports.handler = async (event) => {
     plan_key,
     biz_tier: tier === 'business' ? biz_tier : '',
     locations: tier === 'business' ? String(locations) : '',
-    tenant_slug: tier === 'business' ? tenant_slug : '',
+
+    // Optional NDYRA context (safe for all tiers)
+    flow: payload.flow ? String(payload.flow) : '',
+    tenant_id: payload.tenant_id ? String(payload.tenant_id) : '',
+    tenant_slug: payload.tenant_slug ? String(payload.tenant_slug) : (tier === 'business' ? tenant_slug : ''),
     tenant_name: tier === 'business' ? tenant_name : ''
   };
 

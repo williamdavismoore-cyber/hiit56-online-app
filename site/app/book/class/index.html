@@ -2,60 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/branding/icon-32.png" />
-  <link rel="apple-touch-icon" href="/assets/branding/app-icon-192.png" />
-  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDYRA — Book Class</title>
+  <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link rel="stylesheet" href="/assets/css/ndyra.css" />
-  <title>Book a Class — NDYRA</title>
 </head>
 <body data-page="ndyra-book-class">
   <header class="ndyra-topbar">
-    <div class="inner">
-      <a class="ndyra-brand" href="/app/fyp/">
-        <img src="/assets/branding/app-icon-192.png" alt="NDYRA" width="28" height="28" />
-        <span class="wordmark">NDYRA</span>
-      </a>
-      <nav class="ndyra-topnav">
-        <a href="/app/fyp/">For You</a>
-        <a href="/app/following/">Following</a>
-        <a href="/biz/">For gyms</a>
-      </nav>
-    </div>
+    <a class="ndyra-brand" href="/">NDYRA</a>
+    <nav class="ndyra-topnav">
+      <a href="/app/fyp/?src=demo">App</a>
+      <a href="/biz/">Biz</a>
+    </nav>
   </header>
 
-  <main class="ndyra-main">
-    <div class="inner">
-      <section class="ndyra-card">
-        <h1>Book a class</h1>
-        <p class="muted">Class ID: <strong id="classId">(detecting…)</strong></p>
-        <div class="ndyra-actions">
-          <a class="btn primary" href="#" id="bookContinue">Continue</a>
-          <a class="btn" href="/app/fyp/">Back</a>
-        </div>
+  <main class="ndyra-main" style="max-width: 980px; margin: 0 auto; padding: 20px;">
+    <h1 style="margin: 0 0 6px;">Book Class</h1>
+    <p style="margin: 0 0 16px; opacity: .8;">Smart Booking Fork (membership vs tokens) is enforced server-side.</p>
 
-        <p class="muted" style="margin-top:12px">
-          Demo scaffold (Blueprint v7.3.1). Booking rules + payment gates land next.
-        </p>
-
-      </section>
-    </div>
+    <section class="card" style="padding: 14px;">
+      <div style="display:flex; gap: 10px; align-items: baseline; flex-wrap: wrap;">
+        <strong>class_session_id:</strong>
+        <span data-class-session-id style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;"></span>
+      </div>
+      <div style="margin-top: 10px; opacity: .8;">
+        This page is scaffolded. The canonical token booking RPC is <code>book_class_with_tokens(p_class_session_id uuid)</code>.
+      </div>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-left">
-        <span class="build-label">build preview</span>
-      </div>
-      <div class="footer-right">
-        <a href="/privacy.html">Privacy</a>
-        <span class="sep">•</span>
-        <a href="/terms.html">Terms</a>
-      </div>
-    </div>
-  </footer>
+  <footer class="footer" style="text-align:center; padding: 14px; opacity:.8;">Build Preview</footer>
 
   <script type="module" src="/assets/js/ndyra/boot.mjs"></script>
 </body>
